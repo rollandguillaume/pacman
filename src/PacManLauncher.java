@@ -2,11 +2,16 @@
 class PacManLauncher {
 
   private Figure[][] maps;
-  private Pacman pacMan;
+  private Pacman pacman;
+  public static final String UP = "UP";
+  public static final String DOWN = "DOWN";
+  public static final String LEFT = "LEFT";
+  public static final String RIGHT = "RIGHT";
+  public static final int SPEED = 10;
 
   public PacManLauncher () {
     this.maps = new Figure[3][3];
-    this.pacMan = new Pacman(50, 250, 250, "yellow");
+    this.pacman = new Pacman(50, 250, 250, "yellow");
   }
 
   public static void main(String[] args) {
@@ -15,6 +20,8 @@ class PacManLauncher {
     PacManLauncher pml = new PacManLauncher();
     pml.draw();
     pml.animate();
+
+    System.out.println("~~~END~~~");
   }
 
   public void draw () {
@@ -25,7 +32,7 @@ class PacManLauncher {
         }
       }
     }
-    this.pacMan.draw();
+    this.pacman.draw();
   }
 
 
@@ -33,22 +40,20 @@ class PacManLauncher {
     int cpt = 0;
     Canvas c = Canvas.getCanvas();
     while (cpt < 1000) {
+      //swich the key press, move the pacman
       if (c.isUpPressed()) {
-        System.out.println("up");
-        this.pacMan.move();
+        this.pacman.move(this.UP);
       } else if (c.isDownPressed()) {
-        System.out.println("down");
+        this.pacman.move(this.DOWN);
       } else if (c.isLeftPressed()) {
-        System.out.println("left");
+        this.pacman.move(this.LEFT);
       } else if (c.isRightPressed()) {
-        System.out.println("right");
-        //this.pacMan.move();
+        this.pacman.move(this.RIGHT);
       }
 
       Canvas.getCanvas().redraw();
       cpt++;
     }
-    System.out.println("END");
   }
 
 }

@@ -3,10 +3,10 @@ import java.awt.geom.*;
 
 /**
  * A circle that can be manipulated and that draws itself on a canvas.
- * 
+ *
  * @author launay
  * @version 2017.01.01
- * 
+ *
  * @inv getWidth() == getHeight()
  */
 
@@ -15,12 +15,12 @@ public class Circle extends Figure
 
     /**
      * Create a new circle.
-     * 
+     *
      * @param size the circle initial size
      * @param x the circle initial x location
      * @param y the circle initial y location
-     * @param color the circle initial color. 
-     * 
+     * @param color the circle initial color.
+     *
      * @pre size >= 0
      * @pre color.equals("white") || color.equals("black") || color.equals("red") || color.equals("blue") || color.equals("yellow") || color.equals("green")
      */
@@ -41,9 +41,9 @@ public class Circle extends Figure
 
     /**
      * Change the size to the new size (in pixels).
-     * 
+     *
      * @param size the new size in pixels
-     * 
+     *
      * @pre size >= 0
      */
     public void setSize(int size)
@@ -52,12 +52,12 @@ public class Circle extends Figure
     }
 
     /**
-     * Change the size to the new size (in pixels). 
-     * 
+     * Change the size to the new size (in pixels).
+     *
      * @param width the new width in pixels
      * @param height the new height in pixels
-     * 
-     * @pre width >= 0 && height == width 
+     *
+     * @pre width >= 0 && height == width
      */
     public void setSize(int width, int height)
     {
