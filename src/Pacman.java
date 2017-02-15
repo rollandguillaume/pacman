@@ -1,36 +1,30 @@
-
 /**
  * Write a description of class Pacman here.
  *
  * @author launay
  * @version 2017.01.01
  */
-public class Pacman extends Figure {
+public class Pacman extends ArcCircle {
 
-	private Figure[] figures;
+	private ArcCircle[] figures;
+	private static final String PACMAN_COLOR = "yellow"; // the Pacman default color
+	private static int Ouverture=40;
+	private boolean plusouvert =true;
+	private String DernierePosition="";
 
 	/**
      * Create a new Figure_Pacman.
      *
      * @pre size >= 0
      */
-	public Pacman(int size, int x, int y, String color) {
-		super(size, size, x, y, color);
-		this.figures = new Figure[2];
-		this.figures[0] = new Circle(size,x,y,color); // corps
+	public Pacman(int size, int x, int y) {
+		super(size,x,y,PACMAN_COLOR,0,360);
+		this.figures = new ArcCircle[2];
+		this.figures[0] = new ArcCircle(size,x,y,PACMAN_COLOR,0,360); // corps
 
 	}
 
-	/**
-   * Draw the figure with current specifications on screen.
-   */
-  protected void draw() {
-    for (Figure figure : this.figures) {
-			if (figure != null) {
-				figure.draw();
-			}
-    }
-  }
+
 
 	/**
 	* move the pacman and all figures which blend him
@@ -41,11 +35,8 @@ public class Pacman extends Figure {
 		int dy = crossMap[1];
 		this.move(dx, dy);//move the pacman
 		//and move all figure of the pacman
-		for (Figure figure : this.figures) {
-			if (figure != null) {
-				figure.move(dx, dy);
-			}
-    }
+		
+    
 	}
 
 	/**
@@ -97,6 +88,47 @@ public class Pacman extends Figure {
 		ret[1] = dy;
 		return ret;
 	}
-
+	
+	public void DeplaceOuverture(String direction){
+		if (direction.equals("UP")){
+			setAngleStart( 90-Ouverture);
+			setAngleExtent(-360+2*Ouverture);
+			DernierePosition="UP";
+		}
+		if (direction.equals("LEFT")){
+			setAngleStart( 180-Ouverture);
+			setAngleExtent(-360+2*Ouverture);
+			DernierePosition="LEFT";
+		}
+		if (direction.equals("DOWN")){
+			setAngleStart( 270-Ouverture);
+			setAngleExtent(-360+2*Ouverture);
+			DernierePosition="DOWN";
+		}
+		if (direction.equals("RIGHT")){
+			setAngleStart( -Ouverture);
+			setAngleExtent(-360+2*Ouverture);
+			DernierePosition="RIGHT";
+		}
+	}
+	
+	
+	public void animate()
+	{
+		Canvas canvas = Canvas.getCanvas();
+		if(plusouvert){
+			int temp=Ouverture;
+			Ouverture=0;
+			this.DeplaceOuverture(DernierePosition);
+			Ouverture=temp;
+			plusouvert=!plusouvert;
+			}
+		else{
+			this.DeplaceOuverture(DernierePosition);
+			plusouvert=!plusouvert;
+		}
+		draw();
+		
+	}
 
 }
