@@ -1,4 +1,3 @@
-
 class PacManLauncher {
 
   private Figure[][] maps;
@@ -11,7 +10,7 @@ class PacManLauncher {
 
   public PacManLauncher () {
     this.maps = new Figure[3][3];
-    this.pacman = new Pacman(50, 250, 250, "yellow");
+    this.pacman = new Pacman(50, 250, 250);
   }
 
   public static void main(String[] args) {
@@ -42,15 +41,20 @@ class PacManLauncher {
     while (cpt < 1000) {
       //swich the key press, move the pacman
       if (c.isUpPressed()) {
+    	this.pacman.DeplaceOuverture(this.UP);
         this.pacman.move(this.UP);
       } else if (c.isDownPressed()) {
-        this.pacman.move(this.DOWN);
+    	 this.pacman.DeplaceOuverture(this.DOWN);
+    	 this.pacman.move(this.DOWN);
       } else if (c.isLeftPressed()) {
-        this.pacman.move(this.LEFT);
+    	 this.pacman.DeplaceOuverture(this.LEFT);
+    	 this.pacman.move(this.LEFT);
       } else if (c.isRightPressed()) {
-        this.pacman.move(this.RIGHT);
+    	this.pacman.DeplaceOuverture(this.RIGHT);
+    	this.pacman.move(this.RIGHT);
       }
 
+      this.pacman.animate();
       Canvas.getCanvas().redraw();
       cpt++;
     }
