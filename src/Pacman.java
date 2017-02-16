@@ -12,18 +12,21 @@ public class Pacman extends ArcCircle {
 	private int ouverture;
 	private boolean mouthIsOpen;
 	private String dernierePosition;
+	private Figure[][] map;
 
 	/**
      * Create a new Figure_Pacman.
      *
      * @pre size >= 0
      */
-	public Pacman(int size, int x, int y) {
+	public Pacman(int size, int x, int y, Figure[][] map) {
 		super(size, x, y, PACMAN_COLOR, 0, 360);
 		//initialize the direction of pacman
 		this.dernierePosition = PacManLauncher.LEFT;
 		this.ouverture = this.OUVERTURE_MIN;
 		this.deplaceOuverture(PacManLauncher.LEFT);
+
+		this.map = map;
 	}
 
 
@@ -31,15 +34,22 @@ public class Pacman extends ArcCircle {
 	* move the pacman and all figures which blend him
 	*/
 	public void move (String toward) {
+		int dx = 0;
+		int dy = 0;
+
 		int[] crossMap = this.crossMap(toward);
+		dx = crossMap[0];
+		dy = crossMap[1];
+
+		crossMap = this.checkColision(toward, dx, dy);
+		dx = crossMap[0];
+		dy = crossMap[1];
+
+		System.out.println(dx+","+dy);
+
 		this.deplaceOuverture(toward);
-		int dx = crossMap[0];
-		int dy = crossMap[1];
-
 		this.animateMouth();
-
 		this.move(dx, dy);//move the pacman
-
 	}
 
 	/**
@@ -92,7 +102,7 @@ public class Pacman extends ArcCircle {
 		return ret;
 	}
 
-	public void deplaceOuverture(String direction) {
+	private void deplaceOuverture(String direction) {
 		if (direction.equals(PacManLauncher.UP)) {
 			this.setAngleStart(90-ouverture);
 			this.setAngleExtent(-360+2*ouverture);
@@ -107,6 +117,72 @@ public class Pacman extends ArcCircle {
 			this.setAngleExtent(-360+2*ouverture);
 		}
 		this.dernierePosition = direction;
+	}
+
+	/**
+	*	Check if pacman go in the wall
+	*/
+	private int[] checkColision (String toward, int dx, int dy) {
+		int[] ret = new int[2];
+
+		//FAIRE : f a determiner
+		Figure f = this.map[1][1];
+		if (this.checkOneColision(this.map[1][1], dx, dy)) {
+			if (toward.equals(PacManLauncher.UP)) {
+				//dy<0
+				dy = this.getY()-(f.getY()+f.getHeight());
+			} else if (toward.equals(PacManLauncher.DOWN)) {
+				//dy>0
+				dy = (this.getY()+this.getSize())-f.getY();
+			} else if (toward.equals(PacManLauncher.LEFT)) {
+				//dx<0
+				dx = this.getX()-(f.getX()+f.getWidth());
+			} else if (toward.equals(PacManLauncher.RIGHT)) {
+				//dy>0
+				dx = (this.getX()+this.getSize())-f.getX();
+			}
+		}
+
+		ret[0] = dx;
+		ret[1] = dy;
+
+		return ret;
+	}
+
+	/**
+	*	check if is one colision with Figure
+	* avec le déplacement qui va etre effectuer
+	*
+	* @param f the figure
+	* @param dx le deplacement x a faire
+	* @param dy le deplacement y a faire
+	*
+	* @pre f is not null
+	*/
+	private boolean checkOneColision (Figure f, int dx, int dy) {
+		boolean ret = false;
+
+		if (f != null) {
+			int xf = f.getX();//x de f
+			int yf = f.getY();//y de f
+			int wf = f.getWidth();//largeur f
+			int hf = f.getHeight();//hauteur f
+
+			int xt = this.getX()+dx;//x
+			int yt = this.getY()+dy;//y
+			int st = this.getSize();//size pacman
+
+			boolean posMinX = (xt < (xf+wf)) || ((xt+st) < (xf+wf));//inferieur bord droit
+			boolean posMaxX = (xt > xf) || (xt+st > xf);//superieur bord gauche
+			boolean posMinY = (yt < (yf+hf)) || (yt+st < (yf+hf));//inferieur bord bas
+			boolean posMaxY = (yt > yf) || (yt+st > yf);//superieur bord haut
+
+			if (posMinX && posMaxX && posMinY && posMaxY) {
+				ret = true;
+			}
+		}
+
+		return ret;
 	}
 
 	/**

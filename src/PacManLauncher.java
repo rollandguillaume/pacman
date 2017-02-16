@@ -7,15 +7,18 @@ class PacManLauncher {
   public static final String LEFT = "LEFT";
   public static final String RIGHT = "RIGHT";
   public static final int SPEED = 10;
+  public static final int SIZE_WALL = 50;
+  private static final String ColorWall = "blue";
 
   public PacManLauncher () {
     //pour la maps, je pense qu'un objet pour recuperer directement le tableau serait cool :)
-    this.maps = new Figure[3][3];
-    this.maps[0][0] = new Wall(50, 0, 0, "blue");
-    this.maps[1][1] = new Wall(50, 50, 50, "blue");
-    this.maps[2][2] = new Wall(50, 100, 100, "blue");
+    int nbrCase = Canvas.WIDTH / this.SIZE_WALL;
+    this.maps = new Figure[nbrCase][nbrCase];
+    this.maps[0][0] = new Wall(this.SIZE_WALL, 0, 0, this.ColorWall);
+    this.maps[1][1] = new Wall(this.SIZE_WALL, 50, 50, this.ColorWall);
+    this.maps[2][2] = new Wall(this.SIZE_WALL, 100, 100, this.ColorWall);
 
-    this.pacman = new Pacman(50, 250, 250);
+    this.pacman = new Pacman(50, 250, 250, this.maps);
   }
 
   public static void main(String[] args) {
@@ -37,6 +40,15 @@ class PacManLauncher {
       }
     }
     this.pacman.draw();
+  }
+
+  public void toStringMap () {
+    for (Figure[] l : this.maps) {
+			for (Figure f : l) {
+				System.out.print(f+"\t");
+			}
+			System.out.println("\n");
+		}
   }
 
 
