@@ -18,7 +18,7 @@ class PacManLauncher {
     this.maps[1][1] = new Wall(this.SIZE_WALL, 50, 50, this.ColorWall);
     this.maps[2][2] = new Wall(this.SIZE_WALL, 100, 100, this.ColorWall);
 
-    this.pacman = new Pacman(50, 250, 250, this.maps);
+    this.pacman = new Pacman(this.SIZE_WALL-10, 250, 250, this.maps);
   }
 
   public static void main(String[] args) {

@@ -45,8 +45,6 @@ public class Pacman extends ArcCircle {
 		dx = crossMap[0];
 		dy = crossMap[1];
 
-		System.out.println(dx+","+dy);
-
 		this.deplaceOuverture(toward);
 		this.animateMouth();
 		this.move(dx, dy);//move the pacman
@@ -125,27 +123,41 @@ public class Pacman extends ArcCircle {
 	private int[] checkColision (String toward, int dx, int dy) {
 		int[] ret = new int[2];
 
-		//FAIRE : f a determiner
-		Figure f = this.map[1][1];
-		if (this.checkOneColision(this.map[1][1], dx, dy)) {
-			if (toward.equals(PacManLauncher.UP)) {
-				//dy<0
-				dy = this.getY()-(f.getY()+f.getHeight());
-			} else if (toward.equals(PacManLauncher.DOWN)) {
-				//dy>0
-				dy = (this.getY()+this.getSize())-f.getY();
-			} else if (toward.equals(PacManLauncher.LEFT)) {
-				//dx<0
-				dx = this.getX()-(f.getX()+f.getWidth());
-			} else if (toward.equals(PacManLauncher.RIGHT)) {
-				//dy>0
-				dx = (this.getX()+this.getSize())-f.getX();
+/*
+		//FAIRE optimisation en fonction de la direction choisi !!
+		//FAIRE pour eviter de checker toute la map
+		//FAIRE connaitre ligne et colonne de pacman et
+		//FAIRE en fonction de direction
+		//FAIRE les 3 figures devant pacman
+
+		int colonne = this.getX()/PacManLauncher.SIZE_WALL;
+		int ligne = this.getY()/PacManLauncher.SIZE_WALL;
+		System.out.println(colonne+","+ligne);
+*/
+
+		for (Figure[] l : this.map) {
+			for (Figure f : l) {
+				if (this.checkOneColision(f, dx, dy)) {
+					if (toward.equals(PacManLauncher.UP)) {
+						//dy<0
+						dy = this.getY()-(f.getY()+f.getHeight());
+					} else if (toward.equals(PacManLauncher.DOWN)) {
+						//dy>0
+						dy = (this.getY()+this.getSize())-f.getY();
+					} else if (toward.equals(PacManLauncher.LEFT)) {
+						//dx<0
+						dx = this.getX()-(f.getX()+f.getWidth());
+					} else if (toward.equals(PacManLauncher.RIGHT)) {
+						//dy>0
+						dx = (this.getX()+this.getSize())-f.getX();
+					}
+				}
 			}
 		}
 
+
 		ret[0] = dx;
 		ret[1] = dy;
-
 		return ret;
 	}
 
