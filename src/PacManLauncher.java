@@ -41,20 +41,15 @@ class PacManLauncher {
     while (cpt < 1000) {
       //swich the key press, move the pacman
       if (c.isUpPressed()) {
-    	this.pacman.DeplaceOuverture(this.UP);
         this.pacman.move(this.UP);
       } else if (c.isDownPressed()) {
-    	 this.pacman.DeplaceOuverture(this.DOWN);
-    	 this.pacman.move(this.DOWN);
+        this.pacman.move(this.DOWN);
       } else if (c.isLeftPressed()) {
-    	 this.pacman.DeplaceOuverture(this.LEFT);
-    	 this.pacman.move(this.LEFT);
+        this.pacman.move(this.LEFT);
       } else if (c.isRightPressed()) {
-    	this.pacman.DeplaceOuverture(this.RIGHT);
-    	this.pacman.move(this.RIGHT);
+        this.pacman.move(this.RIGHT);
       }
 
-      this.pacman.animate();
       Canvas.getCanvas().redraw();
       cpt++;
     }

@@ -8,9 +8,9 @@ public class Pacman extends ArcCircle {
 
 	private ArcCircle[] figures;
 	private static final String PACMAN_COLOR = "yellow"; // the Pacman default color
-	private static int Ouverture=40;
-	private boolean plusouvert =true;
-	private String DernierePosition="";
+	private static int ouverture = 40;
+	private boolean plusouvert = true;
+	private String dernierePosition = "";
 
 	/**
      * Create a new Figure_Pacman.
@@ -19,7 +19,7 @@ public class Pacman extends ArcCircle {
      */
 	public Pacman(int size, int x, int y) {
 		super(size,x,y,PACMAN_COLOR,0,360);
-		this.figures = new ArcCircle[2];
+		this.figures = new ArcCircle[1];
 		this.figures[0] = new ArcCircle(size,x,y,PACMAN_COLOR,0,360); // corps
 
 	}
@@ -31,12 +31,12 @@ public class Pacman extends ArcCircle {
 	*/
 	public void move (String toward) {
 		int[] crossMap = this.crossMap(toward);
+		this.deplaceOuverture(toward);
 		int dx = crossMap[0];
 		int dy = crossMap[1];
 		this.move(dx, dy);//move the pacman
-		//and move all figure of the pacman
-		
-    
+
+		this.animate();
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class Pacman extends ArcCircle {
 				dy = -speed;
 			}
 		} else if (toward.equals(PacManLauncher.DOWN)) {
-			if (y+speed > heightMap-speed) {
+			if (y+speed > heightMap-width) {
 				dy = -heightMap;
 			} else {
 				dy = speed;
@@ -88,47 +88,40 @@ public class Pacman extends ArcCircle {
 		ret[1] = dy;
 		return ret;
 	}
-	
-	public void DeplaceOuverture(String direction){
-		if (direction.equals("UP")){
-			setAngleStart( 90-Ouverture);
-			setAngleExtent(-360+2*Ouverture);
-			DernierePosition="UP";
+
+	public void deplaceOuverture(String direction){
+		if (direction.equals(PacManLauncher.UP)){
+			setAngleStart( 90-ouverture);
+			setAngleExtent(-360+2*ouverture);
+		} else if (direction.equals(PacManLauncher.LEFT)){
+			setAngleStart( 180-ouverture);
+			setAngleExtent(-360+2*ouverture);
+		} else if (direction.equals(PacManLauncher.DOWN)){
+			setAngleStart( 270-ouverture);
+			setAngleExtent(-360+2*ouverture);
+		} else if (direction.equals(PacManLauncher.RIGHT)){
+			setAngleStart( -ouverture);
+			setAngleExtent(-360+2*ouverture);
 		}
-		if (direction.equals("LEFT")){
-			setAngleStart( 180-Ouverture);
-			setAngleExtent(-360+2*Ouverture);
-			DernierePosition="LEFT";
-		}
-		if (direction.equals("DOWN")){
-			setAngleStart( 270-Ouverture);
-			setAngleExtent(-360+2*Ouverture);
-			DernierePosition="DOWN";
-		}
-		if (direction.equals("RIGHT")){
-			setAngleStart( -Ouverture);
-			setAngleExtent(-360+2*Ouverture);
-			DernierePosition="RIGHT";
-		}
+		this.dernierePosition = direction;
 	}
-	
-	
+
+
 	public void animate()
 	{
 		Canvas canvas = Canvas.getCanvas();
 		if(plusouvert){
-			int temp=Ouverture;
-			Ouverture=0;
-			this.DeplaceOuverture(DernierePosition);
-			Ouverture=temp;
+			int temp=ouverture;
+			ouverture=0;
+			this.deplaceOuverture(this.dernierePosition);
+			ouverture=temp;
 			plusouvert=!plusouvert;
-			}
-		else{
-			this.DeplaceOuverture(DernierePosition);
+		}	else {
+			this.deplaceOuverture(this.dernierePosition);
 			plusouvert=!plusouvert;
 		}
 		draw();
-		
+
 	}
 
 }
