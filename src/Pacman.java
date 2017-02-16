@@ -19,13 +19,16 @@ public class Pacman extends ArcCircle {
      *
      * @pre size >= 0
      */
-	public Pacman(int size, int x, int y, Figure[][] map) {
+	public Pacman(int size, int x, int y) {
 		super(size, x, y, PACMAN_COLOR, 0, 360);
 		//initialize the direction of pacman
 		this.dernierePosition = PacManLauncher.LEFT;
 		this.ouverture = this.OUVERTURE_MIN;
 		this.deplaceOuverture(PacManLauncher.LEFT);
 
+	}
+
+	public void setMap (Figure[][] map) {
 		this.map = map;
 	}
 
@@ -123,7 +126,7 @@ public class Pacman extends ArcCircle {
 	private int[] checkColision (String toward, int dx, int dy) {
 		int[] ret = new int[2];
 
-/*
+		/*
 		//FAIRE optimisation en fonction de la direction choisi !!
 		//FAIRE pour eviter de checker toute la map
 		//FAIRE connaitre ligne et colonne de pacman et
@@ -133,28 +136,32 @@ public class Pacman extends ArcCircle {
 		int colonne = this.getX()/PacManLauncher.SIZE_WALL;
 		int ligne = this.getY()/PacManLauncher.SIZE_WALL;
 		System.out.println(colonne+","+ligne);
-*/
+		*/
 
 		for (Figure[] l : this.map) {
 			for (Figure f : l) {
 				if (this.checkOneColision(f, dx, dy)) {
-					if (toward.equals(PacManLauncher.UP)) {
-						//dy<0
-						dy = this.getY()-(f.getY()+f.getHeight());
-					} else if (toward.equals(PacManLauncher.DOWN)) {
-						//dy>0
-						dy = (this.getY()+this.getSize())-f.getY();
-					} else if (toward.equals(PacManLauncher.LEFT)) {
-						//dx<0
-						dx = this.getX()-(f.getX()+f.getWidth());
-					} else if (toward.equals(PacManLauncher.RIGHT)) {
-						//dy>0
-						dx = (this.getX()+this.getSize())-f.getX();
+					if (f instanceof Wall) {
+						if (toward.equals(PacManLauncher.UP)) {
+							//dy<0
+							dy = this.getY()-(f.getY()+f.getHeight());
+						} else if (toward.equals(PacManLauncher.DOWN)) {
+							//dy>0
+							dy = (this.getY()+this.getSize())-f.getY();
+						} else if (toward.equals(PacManLauncher.LEFT)) {
+							//dx<0
+							dx = this.getX()-(f.getX()+f.getWidth());
+						} else if (toward.equals(PacManLauncher.RIGHT)) {
+							//dy>0
+							dx = (this.getX()+this.getSize())-f.getX();
+						}
+					} else if (f instanceof Gomme) {
+						//System.out.println("it's a gomme");
+						//FAIRE disparaitre la gomme
 					}
 				}
 			}
 		}
-
 
 		ret[0] = dx;
 		ret[1] = dy;
@@ -169,28 +176,30 @@ public class Pacman extends ArcCircle {
 	* @param dx le deplacement x a faire
 	* @param dy le deplacement y a faire
 	*
-	* @pre f is not null
+	* @pre f is not null and is an instance of Wall
 	*/
 	private boolean checkOneColision (Figure f, int dx, int dy) {
 		boolean ret = false;
 
 		if (f != null) {
-			int xf = f.getX();//x de f
-			int yf = f.getY();//y de f
-			int wf = f.getWidth();//largeur f
-			int hf = f.getHeight();//hauteur f
+			if (f instanceof Wall || f instanceof Gomme) {
+				int xf = f.getX();//x de f
+				int yf = f.getY();//y de f
+				int wf = f.getWidth();//largeur f
+				int hf = f.getHeight();//hauteur f
 
-			int xt = this.getX()+dx;//x
-			int yt = this.getY()+dy;//y
-			int st = this.getSize();//size pacman
+				int xt = this.getX()+dx;//x
+				int yt = this.getY()+dy;//y
+				int st = this.getSize();//size pacman
 
-			boolean posMinX = (xt < (xf+wf)) || ((xt+st) < (xf+wf));//inferieur bord droit
-			boolean posMaxX = (xt > xf) || (xt+st > xf);//superieur bord gauche
-			boolean posMinY = (yt < (yf+hf)) || (yt+st < (yf+hf));//inferieur bord bas
-			boolean posMaxY = (yt > yf) || (yt+st > yf);//superieur bord haut
+				boolean posMinX = (xt < (xf+wf)) || ((xt+st) < (xf+wf));//inferieur bord droit
+				boolean posMaxX = (xt > xf) || (xt+st > xf);//superieur bord gauche
+				boolean posMinY = (yt < (yf+hf)) || (yt+st < (yf+hf));//inferieur bord bas
+				boolean posMaxY = (yt > yf) || (yt+st > yf);//superieur bord haut
 
-			if (posMinX && posMaxX && posMinY && posMaxY) {
-				ret = true;
+				if (posMinX && posMaxX && posMinY && posMaxY) {
+					ret = true;
+				}
 			}
 		}
 

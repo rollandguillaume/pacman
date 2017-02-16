@@ -17,8 +17,13 @@ class PacManLauncher {
     this.maps[0][0] = new Wall(this.SIZE_WALL, 0, 0, this.ColorWall);
     this.maps[1][1] = new Wall(this.SIZE_WALL, 50, 50, this.ColorWall);
     this.maps[2][2] = new Wall(this.SIZE_WALL, 100, 100, this.ColorWall);
+    this.maps[2][1] = new Gomme(this.SIZE_WALL, 100, 50, false);
+    this.maps[4][2] = new Gomme(this.SIZE_WALL, 200, 100, false);
+    this.maps[0][3] = new Gomme(this.SIZE_WALL, 0, 150, true);
 
-    this.pacman = new Pacman(this.SIZE_WALL-10, 250, 250, this.maps);
+
+    this.pacman = new Pacman(this.SIZE_WALL-10, 250, 250);
+    this.pacman.setMap(this.maps);
   }
 
   public static void main(String[] args) {
