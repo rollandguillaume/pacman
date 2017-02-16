@@ -21,7 +21,7 @@ public class Pacman extends ArcCircle {
 	public Pacman(int size, int x, int y) {
 		super(size, x, y, PACMAN_COLOR, 0, 360);
 		//initialize the direction of pacman
-		this.dernierePosition = "LEFT";
+		this.dernierePosition = PacManLauncher.LEFT;
 		this.ouverture = this.OUVERTURE_MIN;
 		this.deplaceOuverture(PacManLauncher.LEFT);
 	}

@@ -9,7 +9,12 @@ class PacManLauncher {
   public static final int SPEED = 10;
 
   public PacManLauncher () {
+    //pour la maps, je pense qu'un objet pour recuperer directement le tableau serait cool :)
     this.maps = new Figure[3][3];
+    this.maps[0][0] = new Wall(50, 0, 0, "blue");
+    this.maps[1][1] = new Wall(50, 50, 50, "blue");
+    this.maps[2][2] = new Wall(50, 100, 100, "blue");
+
     this.pacman = new Pacman(50, 250, 250);
   }
 
