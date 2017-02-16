@@ -1,16 +1,17 @@
 /**
  * Write a description of class Pacman here.
  *
- * @author launay
+ * @author maxime
  * @version 2017.01.01
  */
 public class Pacman extends ArcCircle {
 
-	private ArcCircle[] figures;
 	private static final String PACMAN_COLOR = "yellow"; // the Pacman default color
-	private static int ouverture = 40;
-	private boolean plusouvert = true;
-	private String dernierePosition = "";
+	public static final int OUVERTURE_MAX = 40;
+	public static final int OUVERTURE_MIN = 10;
+	private int ouverture;
+	private boolean mouthIsOpen;
+	private String dernierePosition;
 
 	/**
      * Create a new Figure_Pacman.
@@ -18,12 +19,12 @@ public class Pacman extends ArcCircle {
      * @pre size >= 0
      */
 	public Pacman(int size, int x, int y) {
-		super(size,x,y,PACMAN_COLOR,0,360);
-		this.figures = new ArcCircle[1];
-		this.figures[0] = new ArcCircle(size,x,y,PACMAN_COLOR,0,360); // corps
-
+		super(size, x, y, PACMAN_COLOR, 0, 360);
+		//initialize the direction of pacman
+		this.dernierePosition = "LEFT";
+		this.ouverture = this.OUVERTURE_MIN;
+		this.deplaceOuverture(PacManLauncher.LEFT);
 	}
-
 
 
 	/**
@@ -34,9 +35,11 @@ public class Pacman extends ArcCircle {
 		this.deplaceOuverture(toward);
 		int dx = crossMap[0];
 		int dy = crossMap[1];
+
+		this.animateMouth();
+
 		this.move(dx, dy);//move the pacman
 
-		this.animate();
 	}
 
 	/**
@@ -89,39 +92,37 @@ public class Pacman extends ArcCircle {
 		return ret;
 	}
 
-	public void deplaceOuverture(String direction){
-		if (direction.equals(PacManLauncher.UP)){
-			setAngleStart( 90-ouverture);
-			setAngleExtent(-360+2*ouverture);
-		} else if (direction.equals(PacManLauncher.LEFT)){
-			setAngleStart( 180-ouverture);
-			setAngleExtent(-360+2*ouverture);
-		} else if (direction.equals(PacManLauncher.DOWN)){
-			setAngleStart( 270-ouverture);
-			setAngleExtent(-360+2*ouverture);
-		} else if (direction.equals(PacManLauncher.RIGHT)){
-			setAngleStart( -ouverture);
-			setAngleExtent(-360+2*ouverture);
+	public void deplaceOuverture(String direction) {
+		if (direction.equals(PacManLauncher.UP)) {
+			this.setAngleStart(90-ouverture);
+			this.setAngleExtent(-360+2*ouverture);
+		} else if (direction.equals(PacManLauncher.LEFT)) {
+			this.setAngleStart(180-ouverture);
+			this.setAngleExtent(-360+2*ouverture);
+		} else if (direction.equals(PacManLauncher.DOWN)) {
+			this.setAngleStart(270-ouverture);
+			this.setAngleExtent(-360+2*ouverture);
+		} else if (direction.equals(PacManLauncher.RIGHT)) {
+			this.setAngleStart(-ouverture);
+			this.setAngleExtent(-360+2*ouverture);
 		}
 		this.dernierePosition = direction;
 	}
 
-
-	public void animate()
+	/**
+	*	animation of the mouth of pacman
+	*/
+	public void animateMouth()
 	{
-		Canvas canvas = Canvas.getCanvas();
-		if(plusouvert){
-			int temp=ouverture;
-			ouverture=0;
-			this.deplaceOuverture(this.dernierePosition);
-			ouverture=temp;
-			plusouvert=!plusouvert;
-		}	else {
-			this.deplaceOuverture(this.dernierePosition);
-			plusouvert=!plusouvert;
+		if(mouthIsOpen) {
+			//fermeture
+			this.ouverture = this.OUVERTURE_MIN;
+		} else {
+			//ouverture
+			this.ouverture = this.OUVERTURE_MAX;
 		}
-		draw();
-
+		this.deplaceOuverture(this.dernierePosition);
+		this.mouthIsOpen = !this.mouthIsOpen;
 	}
 
 }
