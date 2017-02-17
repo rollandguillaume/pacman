@@ -1,29 +1,20 @@
 class PacManLauncher {
 
-  private Figure[][] maps;
+  //private Figure[][] maps;
+  private Map maps;
   private Pacman pacman;
   public static final String UP = "UP";
   public static final String DOWN = "DOWN";
   public static final String LEFT = "LEFT";
   public static final String RIGHT = "RIGHT";
   public static final int SPEED = 10;
-  public static final int SIZE_WALL = 50;
   private static final String ColorWall = "blue";
 
   public PacManLauncher () {
-    //pour la maps, je pense qu'un objet pour recuperer directement le tableau serait cool :)
-    int nbrCase = Canvas.WIDTH / this.SIZE_WALL;
-    this.maps = new Figure[nbrCase][nbrCase];
-    this.maps[0][0] = new Wall(this.SIZE_WALL, 0, 0, this.ColorWall);
-    this.maps[1][1] = new Wall(this.SIZE_WALL, 50, 50, this.ColorWall);
-    this.maps[2][2] = new Wall(this.SIZE_WALL, 100, 100, this.ColorWall);
-    this.maps[2][1] = new Gomme(this.SIZE_WALL, 100, 50, false);
-    this.maps[4][2] = new Gomme(this.SIZE_WALL, 200, 100, false);
-    this.maps[0][3] = new Gomme(this.SIZE_WALL, 0, 150, true);
+    this.maps = new Map(1);
 
-
-    this.pacman = new Pacman(this.SIZE_WALL-10, 250, 250);
-    this.pacman.setMap(this.maps);
+    this.pacman = new Pacman(this.maps.getTailleCase(), this.maps.getPMX(), this.maps.getPMY());
+    this.pacman.setMap(this.maps.getMap());
   }
 
   public static void main(String[] args) {
@@ -37,7 +28,7 @@ class PacManLauncher {
   }
 
   public void draw () {
-    for (Figure[] fl : this.maps) {
+    for (Figure[] fl : this.maps.getMap()) {
       for (Figure f : fl) {
         if (f!=null) {
           f.draw();
@@ -48,7 +39,7 @@ class PacManLauncher {
   }
 
   public void toStringMap () {
-    for (Figure[] l : this.maps) {
+    for (Figure[] l : this.maps.getMap()) {
 			for (Figure f : l) {
 				System.out.print(f+"\t");
 			}

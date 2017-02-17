@@ -2,7 +2,7 @@ import java.io.*;
 
 class Map {
 
-  private int nbCases, tailleCase;
+  private int nbCases, tailleCase, pacmanX, pacmanY;
   private final int WIDTH = Canvas.WIDTH;
   private Figure[][] theMap;
   private String couleurMur, mapFile;
@@ -13,9 +13,8 @@ class Map {
    * @param mapName le numéro de la map a charger
    */
   public Map(int mapNumber) {
-    this.mapFile = "./doc/map"+ mapNumber +".txt";
+    this.mapFile = "./doc/map"+ mapNumber +".map";
     this.createMap();
-    this.tailleCase = this.WIDTH / this.nbCases;
   }
 
   /*
@@ -43,11 +42,12 @@ class Map {
 
       // On lit toute les lignes du fichier
 			while ((ligne=br.readLine())!=null){
-        System.out.println("\n" + ligne);
+        //System.out.println("\n" + ligne);
         if(firstLine) {
           firstLine = false;
           String[] param = ligne.split(";");
           this.nbCases = Integer.parseInt(param[0]);
+          this.tailleCase = this.WIDTH / this.nbCases;
           this.couleurMur = param[1];
           this.theMap = new Figure[this.nbCases][this.nbCases];
         }
@@ -56,24 +56,26 @@ class Map {
           String[] param = ligne.split("");
           for (String str : param) {
             switch (str) {
-              case "#" :  //this.theMap[i][j] = new Mur("this.couleurMur");
-                          System.out.print(" Mur ");
-                          break;
-              case "." :  //this.theMap[i][j] = new Chemin(0);
-                          System.out.print(" Gomme ");
-                          break;
-              case "*" :  //this.theMap[i][j] = new Chemin(1);
-                          System.out.print(" SuperGomme ");
-                          break;
-              case "O" :  //this.theMap[i][j] = new Chemin(2);
-                          System.out.print(" Fantome ");
-                          break;
-              case "P" :  //this.theMap[i][j] = new PacMan();
-                          System.out.print(" PacMan ");
-                          break;
-              case "F" :  //this.theMap[i][j] = new Fantome();
-                          System.out.print(" Fantome ");
-                          break;
+              case "#" :
+                this.theMap[i][j] = new Wall(this.tailleCase, j*this.tailleCase, i*this.tailleCase, this.couleurMur);
+                break;
+              case "." :
+                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                break;
+              case "*" :
+                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, true);
+                break;
+              case "O" :
+                //this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                break;
+              case "P" :
+                //this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                this.pacmanX = j*this.tailleCase;
+                this.pacmanY = i*this.tailleCase;
+                break;
+              case "F" :
+                //this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                break;
             }
             j++;
           }
@@ -85,5 +87,25 @@ class Map {
 		catch (Exception e){
 			System.out.println(e.toString());
 		}
+  }
+
+  public Figure[][] getMap(){
+    return this.theMap;
+  }
+
+  public int getNbCases() {
+    return this.nbCases;
+  }
+
+  public int getTailleCase() {
+    return this.tailleCase;
+  }
+
+  public int getPMX() {
+    return this.pacmanX;
+  }
+
+  public int getPMY() {
+    return this.pacmanY;
   }
 }

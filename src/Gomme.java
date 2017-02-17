@@ -14,7 +14,7 @@ class Gomme extends Figure {
     this.supra = supra;
     int sg = size;
     if (this.supra) {
-      sg = size/3;
+      sg = size/2;
     } else {
       sg = size/5;
     }
