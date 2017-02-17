@@ -7,12 +7,15 @@
 public class Pacman extends ArcCircle {
 
 	private static final String PACMAN_COLOR = "yellow"; // the Pacman default color
-	public static final int OUVERTURE_MAX = 40;
 	public static final int OUVERTURE_MIN = 10;
+	public static final int OUVERTURE_MAX = 40;
+	private static final int SCORE_GOMME = 10;
+
 	private int ouverture;
 	private boolean mouthIsOpen;
 	private String dernierePosition;
 	private Map map;
+	private int score;
 
 	/**
      * Create a new Figure_Pacman.
@@ -25,13 +28,26 @@ public class Pacman extends ArcCircle {
 		this.dernierePosition = PacManLauncher.LEFT;
 		this.ouverture = this.OUVERTURE_MIN;
 		this.deplaceOuverture(PacManLauncher.LEFT);
-
 	}
 
 	public void setMap (Map map) {
 		this.map = map;
 	}
 
+	public void setLocation (int x, int y) {
+		int tmpx = x-this.getX();
+		int tmpy = y-this.getY();
+
+		this.move(tmpx, tmpy);
+	}
+
+	public void upScore () {
+		this.score += this.SCORE_GOMME;
+	}
+
+	public int getScore () {
+		return this.score;
+	}
 
 	/**
 	* move the pacman and all figures which blend him
@@ -167,6 +183,7 @@ public class Pacman extends ArcCircle {
 							tmp.draw();
 							map[i][j] = tmp;
 							this.map.pickGom();
+							this.upScore();
 						} else {
 							//deja pas de gomme donc rien a faire
 						}

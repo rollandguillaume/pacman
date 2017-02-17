@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 class Map {
 
@@ -7,6 +8,7 @@ class Map {
   private Figure[][] theMap;
   private String couleurMur, mapFile;
   private int nbrGomme;
+  private ArrayList<Integer[]> ghosts;
 
   /**
    * Constructeur de la classe Map, il creer un niveau du jeu a partir d'un fichier
@@ -16,6 +18,7 @@ class Map {
   public Map(int mapNumber) {
     this.mapFile = "./doc/map"+ mapNumber +".map";
     this.nbrGomme = 0;
+    this.ghosts = new ArrayList<Integer[]>();
     this.createMap();
   }
 
@@ -55,30 +58,40 @@ class Map {
         }
         else {
           int j = 0;    // La colonne de la map
+          int tmpx = 0;
+          int tmpy = 0;
+          Integer[] posGhost = null;
+
           String[] param = ligne.split("");
           for (String str : param) {
+            tmpx = j*this.tailleCase;
+            tmpy = i*this.tailleCase;
             switch (str) {
               case "#" :
-                this.theMap[i][j] = new Wall(this.tailleCase, j*this.tailleCase, i*this.tailleCase, this.couleurMur);
+                this.theMap[i][j] = new Wall(this.tailleCase, tmpx, tmpy, this.couleurMur);
                 break;
               case "." :
-                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                this.theMap[i][j] = new Gomme(this.tailleCase, tmpx, tmpy, false);
                 this.nbrGomme += 1;
                 break;
               case "*" :
-                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, true);
+                this.theMap[i][j] = new Gomme(this.tailleCase, tmpx, tmpy, true);
                 this.nbrGomme += 1;
                 break;
               case "O" :
-                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase);
+                this.theMap[i][j] = new Gomme(this.tailleCase, tmpx, tmpy);
                 break;
               case "P" :
-                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase);
-                this.pacmanX = j*this.tailleCase;
-                this.pacmanY = i*this.tailleCase;
+                this.theMap[i][j] = new Gomme(this.tailleCase, tmpx, tmpy);
+                this.pacmanX = tmpx;
+                this.pacmanY = tmpy;
                 break;
               case "F" :
-                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase);
+                this.theMap[i][j] = new Gomme(this.tailleCase, tmpx, tmpy);
+                posGhost = new Integer[2];
+                posGhost[0] = new Integer(tmpx);
+                posGhost[1] = new Integer(tmpy);
+                this.ghosts.add(posGhost);
                 break;
             }
             j++;
@@ -119,5 +132,9 @@ class Map {
 
   public int getPMY() {
     return this.pacmanY;
+  }
+
+  public ArrayList<Integer[]> getPGhost() {
+    return this.ghosts;
   }
 }
