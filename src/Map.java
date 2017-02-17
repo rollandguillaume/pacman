@@ -70,15 +70,15 @@ class Map {
                 this.nbrGomme += 1;
                 break;
               case "O" :
-                //this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase);
                 break;
               case "P" :
-                //this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase);
                 this.pacmanX = j*this.tailleCase;
                 this.pacmanY = i*this.tailleCase;
                 break;
               case "F" :
-                //this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase);
                 break;
             }
             j++;

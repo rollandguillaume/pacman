@@ -6,10 +6,14 @@ class Gomme extends Figure {
   private static final String COLOR_WALK = "black";
   private static final String COLOR_GOM = "white";
 
-  public Gomme (int size, int x, int y, boolean supra) {
+  public Gomme (int size, int x, int y) {
     super(size, size, x, y, "black");
     this.figures = new Figure[2];
     this.figures[0] = new Square(size, x, y, this.COLOR_WALK);
+  }
+
+  public Gomme (int size, int x, int y, boolean supra) {
+    this(size, x, y);
 
     this.supra = supra;
     int sg = size;

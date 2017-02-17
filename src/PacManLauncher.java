@@ -11,20 +11,27 @@ class PacManLauncher {
   private static final String ColorWall = "blue";
 
   public PacManLauncher () {
-    this.maps = new Map(1);
-
-    this.pacman = new Pacman(this.maps.getTailleCase(), this.maps.getPMX(), this.maps.getPMY());
-    this.pacman.setMap(this.maps);
+    this.upLvl(1);
   }
 
   public static void main(String[] args) {
     Canvas c = Canvas.getCanvas();
 
     PacManLauncher pml = new PacManLauncher();
-    pml.draw();
-    pml.animate();
+    for (int i=1; i<=2; i++) {
+      pml.draw();
+      pml.animate();
+
+      pml.upLvl(2);
+    }
 
     System.out.println("~~~END~~~");
+  }
+
+  public void upLvl (int lvl) {
+    this.maps = new Map(lvl);
+    this.pacman = new Pacman(this.maps.getTailleCase(), this.maps.getPMX(), this.maps.getPMY());
+    this.pacman.setMap(this.maps);
   }
 
   public void draw () {
@@ -49,7 +56,6 @@ class PacManLauncher {
 
 
   public void animate () {
-    int cpt = 0;
     Canvas c = Canvas.getCanvas();
     while (this.maps.getNbGom() > 0) {
       //swich the key press, move the pacman
@@ -64,7 +70,6 @@ class PacManLauncher {
       }
 
       Canvas.getCanvas().redraw();
-      cpt++;
     }
   }
 
