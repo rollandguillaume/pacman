@@ -6,6 +6,7 @@ class Map {
   private final int WIDTH = Canvas.WIDTH;
   private Figure[][] theMap;
   private String couleurMur, mapFile;
+  private int nbrGomme;
 
   /**
    * Constructeur de la classe Map, il creer un niveau du jeu a partir d'un fichier
@@ -14,6 +15,7 @@ class Map {
    */
   public Map(int mapNumber) {
     this.mapFile = "./doc/map"+ mapNumber +".map";
+    this.nbrGomme = 0;
     this.createMap();
   }
 
@@ -61,9 +63,11 @@ class Map {
                 break;
               case "." :
                 this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
+                this.nbrGomme += 1;
                 break;
               case "*" :
                 this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, true);
+                this.nbrGomme += 1;
                 break;
               case "O" :
                 //this.theMap[i][j] = new Gomme(this.tailleCase, j*this.tailleCase, i*this.tailleCase, false);
@@ -87,6 +91,14 @@ class Map {
 		catch (Exception e){
 			System.out.println(e.toString());
 		}
+  }
+
+  public void pickGom () {
+    this.nbrGomme -= 1;
+  }
+
+  public int getNbGom () {
+    return this.nbrGomme;
   }
 
   public Figure[][] getMap(){

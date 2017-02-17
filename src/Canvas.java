@@ -305,15 +305,15 @@ public class Canvas
 
         @Override
         public void keyReleased(KeyEvent event) {
-          /*
+
             switch (event.getKeyCode()) {
-	    case KeyEvent.VK_UP: upPressed = false; break;
-	    case KeyEvent.VK_DOWN: downPressed = false; break;
-	    case KeyEvent.VK_LEFT: leftPressed = false; break;
-	    case KeyEvent.VK_RIGHT: rightPressed = false; break;
+        	    case KeyEvent.VK_UP: upPressed = false; break;
+        	    case KeyEvent.VK_DOWN: downPressed = false; break;
+        	    case KeyEvent.VK_LEFT: leftPressed = false; break;
+        	    case KeyEvent.VK_RIGHT: rightPressed = false; break;
 
             }
-            */
+
         }
     }
 }

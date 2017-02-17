@@ -14,7 +14,7 @@ class PacManLauncher {
     this.maps = new Map(1);
 
     this.pacman = new Pacman(this.maps.getTailleCase(), this.maps.getPMX(), this.maps.getPMY());
-    this.pacman.setMap(this.maps.getMap());
+    this.pacman.setMap(this.maps);
   }
 
   public static void main(String[] args) {
@@ -51,7 +51,7 @@ class PacManLauncher {
   public void animate () {
     int cpt = 0;
     Canvas c = Canvas.getCanvas();
-    while (cpt < 1000) {
+    while (this.maps.getNbGom() > 0) {
       //swich the key press, move the pacman
       if (c.isUpPressed()) {
         this.pacman.move(this.UP);

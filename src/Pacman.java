@@ -12,7 +12,7 @@ public class Pacman extends ArcCircle {
 	private int ouverture;
 	private boolean mouthIsOpen;
 	private String dernierePosition;
-	private Figure[][] map;
+	private Map map;
 
 	/**
      * Create a new Figure_Pacman.
@@ -28,7 +28,7 @@ public class Pacman extends ArcCircle {
 
 	}
 
-	public void setMap (Figure[][] map) {
+	public void setMap (Map map) {
 		this.map = map;
 	}
 
@@ -138,8 +138,11 @@ public class Pacman extends ArcCircle {
 		System.out.println(colonne+","+ligne);
 		*/
 
-		for (Figure[] l : this.map) {
-			for (Figure f : l) {
+		Figure[][] map = this.map.getMap();
+
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				Figure f = map[i][j];
 				if (this.checkOneColision(f, dx, dy)) {
 					if (f instanceof Wall) {
 						if (toward.equals(PacManLauncher.UP)) {
@@ -158,6 +161,16 @@ public class Pacman extends ArcCircle {
 					} else if (f instanceof Gomme) {
 						//System.out.println("it's a gomme");
 						//FAIRE disparaitre la gomme
+						Gomme tmp = (Gomme)f;
+						if (tmp.getGomme() != null) {
+							tmp.setGomme(null);//plus de gomme
+							tmp.draw();
+							map[i][j] = tmp;
+							this.map.pickGom();
+						} else {
+							//deja pas de gomme donc rien a faire
+						}
+
 					}
 				}
 			}
@@ -205,6 +218,7 @@ public class Pacman extends ArcCircle {
 
 		return ret;
 	}
+
 
 	/**
 	*	animation of the mouth of pacman
