@@ -5,7 +5,8 @@ import java.awt.*;
  * @author maxime
  * @version 2017.02.14
  */
-public class Ghost extends Figure {
+public class Ghost extends Entite {
+
 	private Figure[] figures;
 
 	/**
@@ -15,7 +16,7 @@ public class Ghost extends Figure {
      * @pre color different of ("white")
      */
 	public Ghost(int size, int x, int y, String color) {
-		super(size, size, x, y, color);
+		//super(size, size, x, y, color);
 
 		int diametrehead=(int)(size);
 		int heightbody=(int)(size/2.6);
@@ -38,24 +39,56 @@ public class Ghost extends Figure {
 		figures[8] = new Circle(insideeyesize,(int)(x+size-1.5*eyesize+insideeyesize/2),y+diametrehead/2-eyesize+insideeyesize/2,"black");//eye
 	}
 
-		public void move () {
-			/*TEST
-			this.move(5, 5);
-			for (Figure figure : figures) {
-					figure.move(5, 5);
-			}
-			*/
+	/**
+	*	choisir une direction aleatoire
+	*/
+	public void move () {
+		/*TODO
+		this.move(5, 5);
+		for (Figure figure : figures) {
+				figure.move(5, 5);
 		}
+		*/
+	}
 
-		/**
-     * Draw the figure with current specifications on screen.
-     */
-    protected void draw() {
-        for (Figure figure : figures) {
-            figure.draw();
-        }
-    }
+	/**
+	*	se déplacer dans la direction demandee
+	*/
+	public void move (String toward) {
 
+	}
 
+	public int getX () {
+		return this.figures[0].getX();
+	}
+
+	public int getY () {
+		return this.figures[0].getY();
+	}
+
+	public int getWidth () {
+		return this.figures[0].getWidth();
+	}
+
+	/**
+	*	les fantomes agissent sur les murs
+	* mais pas les gommes
+	*/
+	public boolean typeCaseToCheck (Figure f) {
+		return (f instanceof Wall);
+	}
+
+	protected void actionWithGom (Figure[][] map, int i, int j) {
+		//no interaction
+	}
+
+	/**
+   * Draw the figure with current specifications on screen.
+   */
+  public void draw() {
+      for (Figure figure : figures) {
+          figure.draw();
+      }
+  }
 
 }

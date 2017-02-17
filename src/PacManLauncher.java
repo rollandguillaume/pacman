@@ -16,15 +16,8 @@ class PacManLauncher {
 
   public PacManLauncher () {
     this.maps = new Map(1);
-    ArrayList<Integer[]> gs = this.maps.getPGhost();//tab des positions fantome
-    this.ghost = new Ghost[gs.size()];
 
-    int cpt = 0;
-    for (Integer[] t : gs) {
-      this.ghost[cpt] = new Ghost(this.maps.getTailleCase(), t[0], t[1], "red");
-
-      cpt++;
-    }
+    this.fillGhost();
 
     this.pacman = new Pacman(this.maps.getTailleCase(), this.maps.getPMX(), this.maps.getPMY());
     this.pacman.setMap(this.maps);
@@ -48,8 +41,21 @@ class PacManLauncher {
 
   public void upLvl (int lvl) {
     this.maps = new Map(lvl);
+    this.fillGhost();
     this.pacman.setLocation(this.maps.getPMX(), this.maps.getPMY());
     this.pacman.setMap(this.maps);
+  }
+
+  public void fillGhost () {
+    ArrayList<Integer[]> gs = this.maps.getPGhost();//tab des positions fantome
+    this.ghost = new Ghost[gs.size()];
+
+    int cpt = 0;
+    for (Integer[] t : gs) {
+      this.ghost[cpt] = new Ghost(this.maps.getTailleCase(), t[0], t[1], "red");
+
+      cpt++;
+    }
   }
 
   public void draw () {
