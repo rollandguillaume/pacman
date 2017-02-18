@@ -31,6 +31,17 @@ abstract class Entite {
 
 		int colonne = this.getX()/this.map.getTailleCase();
 		int ligne = this.getY()/this.map.getTailleCase();
+    System.out.println(colonne+","+ligne);
+    if (colonne <= 0) {//gestion bord de map droite/gauche
+      colonne = 1;
+    } else if (colonne >= map.length-1) {
+      colonne = map.length-2;
+    }
+    if (ligne <= 0) {//gestion bord de map bas/haut
+      ligne = 1;
+    } else if (ligne >= map.length-1) {
+      ligne = map.length-2;
+    }
 
     for (int i=colonne-1; i<=colonne+1; i++) {
       for (int j=ligne-1; j<=ligne+1; j++) {
