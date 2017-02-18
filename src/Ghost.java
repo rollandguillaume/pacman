@@ -43,19 +43,42 @@ public class Ghost extends Entite {
 	*	choisir une direction aleatoire
 	*/
 	public void move () {
-		/*TODO
-		this.move(5, 5);
-		for (Figure figure : figures) {
-				figure.move(5, 5);
+		//POINT D ENTREE DU DEPLACEMENT DU FANTOME
+
+		double ran = Math.random()*4;
+		if (ran >= 0 && ran < 1) {
+			this.move(PacManLauncher.UP);
+		} else if (ran >= 1 && ran < 2) {
+			this.move(PacManLauncher.DOWN);
+		}  else if (ran >= 2 && ran < 3) {
+			this.move(PacManLauncher.RIGHT);
+		}  else if (ran >= 3 && ran < 4) {
+			this.move(PacManLauncher.LEFT);
 		}
-		*/
 	}
 
 	/**
 	*	se déplacer dans la direction demandee
 	*/
 	public void move (String toward) {
+		int dx = 0;
+		int dy = 0;
 
+		int[] crossMap = this.crossMap(toward);
+		dx = crossMap[0];
+		dy = crossMap[1];
+
+		crossMap = this.checkColision(toward, dx, dy);
+		dx = crossMap[0];
+		dy = crossMap[1];
+
+		this.move(dx, dy);//move the pacman
+	}
+
+	public void move (int dx, int dy) {
+		for (Figure figure : figures) {
+        figure.move(dx, dy);
+    }
 	}
 
 	public int getX () {
@@ -86,9 +109,9 @@ public class Ghost extends Entite {
    * Draw the figure with current specifications on screen.
    */
   public void draw() {
-      for (Figure figure : figures) {
-          figure.draw();
-      }
+    for (Figure figure : figures) {
+        figure.draw();
+    }
   }
 
 }

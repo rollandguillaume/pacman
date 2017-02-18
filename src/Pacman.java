@@ -66,7 +66,7 @@ public class Pacman extends Entite {
 
 		this.deplaceOuverture(toward);
 		this.animateMouth();
-		this.pac.move(dx, dy);//move the pacman
+		this.move(dx, dy);//move the pacman
 	}
 
 	public int getX () {
@@ -79,6 +79,10 @@ public class Pacman extends Entite {
 
 	public int getWidth () {
 		return this.pac.getWidth();
+	}
+
+	public void move (int dx, int dy) {
+		this.pac.move(dx, dy);
 	}
 
 	private void deplaceOuverture(String direction) {

@@ -53,6 +53,7 @@ class PacManLauncher {
     int cpt = 0;
     for (Integer[] t : gs) {
       this.ghost[cpt] = new Ghost(this.maps.getTailleCase(), t[0], t[1], "red");
+      this.ghost[cpt].setMap(this.maps);
 
       cpt++;
     }

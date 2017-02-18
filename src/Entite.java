@@ -18,6 +18,8 @@ abstract class Entite {
 
   public abstract void move (String toward);
 
+  public abstract void move (int dx, int dy);
+
   public abstract boolean typeCaseToCheck (Figure f);
 
   protected abstract void actionWithGom (Figure[][] map, int i, int j);
@@ -31,7 +33,6 @@ abstract class Entite {
 
 		int colonne = this.getX()/this.map.getTailleCase();
 		int ligne = this.getY()/this.map.getTailleCase();
-    System.out.println(colonne+","+ligne);
     if (colonne <= 0) {//gestion bord de map droite/gauche
       colonne = 1;
     } else if (colonne >= map.length-1) {
