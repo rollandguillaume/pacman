@@ -16,6 +16,13 @@ abstract class Entite {
 		this.map = map;
 	}
 
+  public void setLocation (int x, int y) {
+		int tmpx = x-this.getX();
+		int tmpy = y-this.getY();
+
+		this.move(tmpx, tmpy);
+	}
+
   public abstract void move (String toward);
 
   public abstract void move (int dx, int dy);
@@ -94,27 +101,27 @@ abstract class Entite {
 		int widthMap = Canvas.WIDTH;
 		if (toward.equals(PacManLauncher.UP)) {
 			//pacman is out the map of a part of his body
-			if (y-speed < -width) {
+			if ((y-speed) < (-width)) {
 				//so he spawn at the bottom with a part of his body visible
-				dy = heightMap;
+				dy = heightMap-speed;
 			} else {
 				dy = -speed;
 			}
 		} else if (toward.equals(PacManLauncher.DOWN)) {
-			if (y+speed > heightMap-width) {
-				dy = -heightMap;
+			if ((y+speed) > (heightMap-width)) {
+				dy = -heightMap+speed;
 			} else {
 				dy = speed;
 			}
 		} else if (toward.equals(PacManLauncher.LEFT)) {
-			if (x-speed < -width) {
-				dx = widthMap;
+      if ((x-speed) < (-width)) {
+				dx = widthMap-speed;
 			} else {
 				dx = -speed;
 			}
 		} else if (toward.equals(PacManLauncher.RIGHT)) {
-			if (x+speed > widthMap-width) {
-				dx = -widthMap;
+			if ((x+speed) > (widthMap-width)) {
+				dx = -widthMap+speed;
 			} else {
 				dx = speed;
 			}
@@ -134,7 +141,7 @@ abstract class Entite {
 	* @param dx le deplacement x a faire
 	* @param dy le deplacement y a faire
 	*
-	* @pre f is not null and is an instance of Wall
+	* @pre f is not null and is an instance of Wall or Gomme
 	*/
 	protected boolean checkOneColision (Figure f, int dx, int dy) {
 		boolean ret = false;

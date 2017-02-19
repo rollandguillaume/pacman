@@ -10,7 +10,7 @@ class PacManLauncher {
   public static final String DOWN = "DOWN";
   public static final String LEFT = "LEFT";
   public static final String RIGHT = "RIGHT";
-  public static final int SPEED = 10;
+  public static final int SPEED = 10;//doit etre un multiple de taille de case
   private static final String ColorWall = "blue";
   private static final int NBR_LVL = 2;
 
@@ -82,7 +82,7 @@ class PacManLauncher {
 
   public void animate () {
     Canvas c = Canvas.getCanvas();
-    while (this.maps.getNbGom() > 0) {
+    while ((this.maps.getNbGom() > 0) && (this.pacman.getLife() > 0)) {
       //swich the key press, move the pacman
       if (c.isUpPressed()) {
         this.pacman.move(this.UP);
@@ -94,6 +94,7 @@ class PacManLauncher {
         this.pacman.move(this.RIGHT);
       }
 
+      System.out.println(this.pacman.getX()+","+this.pacman.getY());
       for (Ghost g : this.ghost) {
         g.move();
       }

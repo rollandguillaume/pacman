@@ -10,11 +10,13 @@ public class Pacman extends Entite {
 	public static final int OUVERTURE_MIN = 10;
 	public static final int OUVERTURE_MAX = 40;
 	private static final int SCORE_GOMME = 10;
+	private static final int LIFE_START = 3;
 
 	private ArcCircle pac;
 	private int ouverture;
 	private boolean mouthIsOpen;
 	private String dernierePosition;
+	private int life;
 	private int score;
 
 	/**
@@ -28,13 +30,26 @@ public class Pacman extends Entite {
 		this.dernierePosition = PacManLauncher.LEFT;
 		this.ouverture = this.OUVERTURE_MIN;
 		this.deplaceOuverture(PacManLauncher.LEFT);
+		this.life = this.LIFE_START;
 	}
 
-	public void setLocation (int x, int y) {
-		int tmpx = x-this.pac.getX();
-		int tmpy = y-this.pac.getY();
+	/**
+	* remove one life of pacman
+	*
+	* @return if one life carry off
+	*	@pre this.life > 0
+	*/
+	public boolean carryOff () {
+		boolean ret = false;
+		if (this.life > 0) {
+			this.life -= 1;
+			ret = true;
+		}
+		return ret;
+	}
 
-		this.pac.move(tmpx, tmpy);
+	public int getLife () {
+		return this.life;
 	}
 
 	public void upScore () {
