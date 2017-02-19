@@ -101,7 +101,7 @@ abstract class Entite {
 		int widthMap = Canvas.WIDTH;
 		if (toward.equals(PacManLauncher.UP)) {
 			//pacman is out the map of a part of his body
-			if ((y-speed) < (-width)) {
+			if ((y-speed) <= (-width)) {
 				//so he spawn at the bottom with a part of his body visible
 				dy = heightMap-speed;
 			} else {
@@ -114,7 +114,7 @@ abstract class Entite {
 				dy = speed;
 			}
 		} else if (toward.equals(PacManLauncher.LEFT)) {
-      if ((x-speed) < (-width)) {
+      if ((x-speed) <= (-width)) {
 				dx = widthMap-speed;
 			} else {
 				dx = -speed;

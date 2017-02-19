@@ -94,7 +94,6 @@ class PacManLauncher {
         this.pacman.move(this.RIGHT);
       }
 
-      System.out.println(this.pacman.getX()+","+this.pacman.getY());
       for (Ghost g : this.ghost) {
         g.move();
       }
