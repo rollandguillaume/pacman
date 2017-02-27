@@ -8,7 +8,7 @@ class Map {
   private Figure[][] theMap;
   private String couleurMur, mapFile;
   private int nbrGomme;
-  private ArrayList<Integer[]> ghosts;
+  private ArrayList<Integer[]> ghosts;//position de depart des fantomes
 
   /**
    * Constructeur de la classe Map, il creer un niveau du jeu a partir d'un fichier
@@ -137,4 +137,5 @@ class Map {
   public ArrayList<Integer[]> getPGhost() {
     return this.ghosts;
   }
+  
 }

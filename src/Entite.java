@@ -155,7 +155,7 @@ abstract class Entite {
 
 				int xt = this.getX()+dx;//x
 				int yt = this.getY()+dy;//y
-				int st = this.getWidth();//size pacman
+				int st = this.getWidth();//size
 
 				boolean posMinX = (xt < (xf+wf)) || ((xt+st) < (xf+wf));//inferieur bord droit
 				boolean posMaxX = (xt > xf) || (xt+st > xf);//superieur bord gauche

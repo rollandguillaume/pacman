@@ -181,6 +181,9 @@ public class Canvas
         else if(colorString.equals("green")) {
             graphic.setColor(new Color(80, 160, 60));
         }
+        else if(colorString.equals("pink")) {
+            graphic.setColor(new Color(255, 0, 127));
+        }
         else if(colorString.equals("white")) {
             graphic.setColor(Color.white);
         }

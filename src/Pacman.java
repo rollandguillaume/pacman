@@ -161,5 +161,28 @@ public class Pacman extends Entite {
 		this.deplaceOuverture(this.dernierePosition);
 		this.mouthIsOpen = !this.mouthIsOpen;
 	}
+	
+	public boolean colisionGhost (Ghost f) {
+		boolean ret = false;
+		
+		int xf = f.getX();//x de f
+		int yf = f.getY();//y de f
+		int sf = f.getWidth();//size f
+		
+		int xt = this.getX();//x
+		int yt = this.getY();//y
+		int st = this.getWidth();//size
+
+		boolean posMinX = (xt < (xf+sf)) || ((xt+st) < (xf+sf));//inferieur bord droit
+		boolean posMaxX = (xt > xf) || (xt+st > xf);//superieur bord gauche
+		boolean posMinY = (yt < (yf+sf)) || (yt+st < (yf+sf));//inferieur bord bas
+		boolean posMaxY = (yt > yf) || (yt+st > yf);//superieur bord haut
+
+		if (posMinX && posMaxX && posMinY && posMaxY) {
+			ret = true;
+		}
+		
+		return ret;
+	}
 
 }
