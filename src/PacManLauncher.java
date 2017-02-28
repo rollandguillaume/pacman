@@ -52,15 +52,20 @@ class PacManLauncher {
     ArrayList<Integer[]> gs = this.maps.getPGhost();//tab des positions fantome
     this.ghost = new Ghost[gs.size()];
 
-    String[] color = {"red", "green", "yellow", "pink", "blue"};
+    String[] color = {"redG", "blueG", "orangeG", "pinkG"};
     int cpt = 0;
     int alea = 0;
+    int cptGhost = 0;
     for (Integer[] t : gs) {
     	alea = (int)(Math.random()*color.length);
-      this.ghost[cpt] = new Ghost(this.maps.getTailleCase(), t[0], t[1], color[alea]);
+      this.ghost[cpt] = new Ghost(this.maps.getTailleCase(), t[0], t[1], color[cptGhost]);
       this.ghost[cpt].setMap(this.maps);
 
       cpt++;
+      cptGhost++;
+      if (cptGhost >= color.length) {
+        cptGhost = 0;
+      }
     }
   }
 

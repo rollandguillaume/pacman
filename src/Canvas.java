@@ -31,7 +31,7 @@ public class Canvas
     public static Canvas getCanvas()
     {
         if(canvasSingleton == null) {
-            canvasSingleton = new Canvas("BlueJ Picture Demo", WIDTH, HEIGHT,
+            canvasSingleton = new Canvas("Pac-Man by Guillaume & Maxime & Rémi", WIDTH, HEIGHT,
 					 Color.white);
         }
         canvasSingleton.setVisible(true);
@@ -173,7 +173,7 @@ public class Canvas
             graphic.setColor(Color.black);
         }
         else if(colorString.equals("blue")) {
-            graphic.setColor(new Color(30, 75, 220));
+            graphic.setColor(new Color(0, 0, 204));
         }
         else if(colorString.equals("yellow")) {
             graphic.setColor(new Color(255, 230, 0));
@@ -186,6 +186,18 @@ public class Canvas
         }
         else if(colorString.equals("white")) {
             graphic.setColor(Color.white);
+        }
+        else if(colorString.equals("redG")) {
+            graphic.setColor(new Color(239, 7, 7));
+        }
+        else if(colorString.equals("blueG")) {
+            graphic.setColor(new Color(102, 254, 255));
+        }
+        else if(colorString.equals("orangeG")) {
+            graphic.setColor(new Color(250, 156, 0));
+        }
+        else if(colorString.equals("pinkG")) {
+            graphic.setColor(new Color(255, 152, 153));
         }
         else {
             graphic.setColor(Color.black);
@@ -310,11 +322,12 @@ public class Canvas
         public void keyReleased(KeyEvent event) {
 
             switch (event.getKeyCode()) {
+              /*
         	    case KeyEvent.VK_UP: upPressed = false; break;
         	    case KeyEvent.VK_DOWN: downPressed = false; break;
         	    case KeyEvent.VK_LEFT: leftPressed = false; break;
         	    case KeyEvent.VK_RIGHT: rightPressed = false; break;
-
+              */
             }
 
         }
