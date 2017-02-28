@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 /**
  * Write a description of class ghost here.
  *
@@ -8,6 +9,7 @@ import java.awt.*;
 public class Ghost extends Entite {
 
 	private Figure[] figures;
+	private String previousMove;
 
 	/**
      * Create a new ghost.
@@ -17,6 +19,8 @@ public class Ghost extends Entite {
      */
 	public Ghost(int size, int x, int y, String color) {
 		//super(size, size, x, y, color);
+
+		this.previousMove = PacManLauncher.UP;
 
 		int diametrehead=(int)(size);
 		int heightbody=(int)(size/2.6);
@@ -43,17 +47,8 @@ public class Ghost extends Entite {
 	*	choisir une direction aleatoire
 	*/
 	public void move () {
-		//POINT D ENTREE DU DEPLACEMENT DU FANTOME
-
-		double ran = Math.random()*4;
-		if (ran >= 0 && ran < 1) {
-			this.move(PacManLauncher.UP);
-		} else if (ran >= 1 && ran < 2) {
-			this.move(PacManLauncher.DOWN);
-		}  else if (ran >= 2 && ran < 3) {
-			this.move(PacManLauncher.RIGHT);
-		}  else if (ran >= 3 && ran < 4) {
-			this.move(PacManLauncher.LEFT);
+		if (checkCroisement(this.previousMove)) {
+			this.move(this.previousMove);
 		}
 	}
 
@@ -61,6 +56,7 @@ public class Ghost extends Entite {
 	*	se déplacer dans la direction demandee
 	*/
 	public void move (String toward) {
+		this.previousMove = toward;
 		int dx = 0;
 		int dy = 0;
 
@@ -91,6 +87,118 @@ public class Ghost extends Entite {
 
 	public int getWidth () {
 		return this.figures[0].getWidth();
+	}
+
+	public int getSpeed () {
+		return PacManLauncher.SPEED_GHOST;
+	}
+
+	public boolean checkCroisement (String toward) {
+
+		boolean ret = true;
+
+		Figure[][] map = this.map.getMap();
+
+		//CODE a factoriser dans Entite ...
+		int colonne = this.getX()/this.map.getTailleCase();
+		int ligne = this.getY()/this.map.getTailleCase();
+    if (colonne <= 0) {//gestion bord de map droite/gauche
+      colonne = 1;
+    } else if (colonne >= map.length-1) {
+      colonne = map.length-2;
+    }
+    if (ligne <= 0) {//gestion bord de map bas/haut
+      ligne = 1;
+    } else if (ligne >= map.length-1) {
+      ligne = map.length-2;
+    }
+		//FIN CODE a factoriser dans Entite ...
+
+		Figure fup = map[ligne-1][colonne];
+		Figure fdown = map[ligne+1][colonne];
+		Figure fleft = map[ligne][colonne-1];
+		Figure fright = map[ligne][colonne+1];
+
+		ArrayList<Figure> caseAround =  new ArrayList<Figure>();
+		caseAround.add(fup);
+		caseAround.add(fdown);
+		caseAround.add(fleft);
+		caseAround.add(fright);
+
+		switch (toward) {
+			case PacManLauncher.UP :
+				if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
+					caseAround.remove(fdown);
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				} else if (fup.getClass().getName().compareTo("Wall") == 0) {
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				}
+				break;
+			case PacManLauncher.DOWN :
+				if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
+					caseAround.remove(fup);
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				} else if (fdown.getClass().getName().compareTo("Wall") == 0) {
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				}
+				break;
+			case PacManLauncher.LEFT :
+				if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
+					caseAround.remove(fright);
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				} else if (fleft.getClass().getName().compareTo("Wall") == 0) {
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				}
+				break;
+			case PacManLauncher.RIGHT :
+				if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
+					caseAround.remove(fleft);
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				} else if (fright.getClass().getName().compareTo("Wall") == 0) {
+					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+					ret = false;
+				}
+				break;
+		}
+
+		return ret;
+	}
+
+	public void chooseMove(String toward, ArrayList<Figure> listF, Figure fup, Figure fdown, Figure fleft, Figure fright) {
+		boolean ok = false;
+		ArrayList<Figure> toGo =  new ArrayList<Figure>();
+
+		for (Figure f : listF) {
+			if (f.getClass().getName().compareTo("Wall") != 0) {
+				toGo.add(f);
+			}
+		}
+		Figure nextMove = null;
+		double ran = Math.random()*toGo.size();
+		for (int i = 0; i < toGo.size(); i++) {
+			if (ran >= i && ran < i+1) {
+				nextMove = toGo.get(i);
+			}
+		}
+
+		if (nextMove == null) {
+			this.move(toward);
+		} else if (nextMove == fup) {
+			this.move(PacManLauncher.UP);
+		} else if (nextMove == fdown) {
+			this.move(PacManLauncher.DOWN);
+		} else if (nextMove == fleft) {
+			this.move(PacManLauncher.LEFT);
+		} else if (nextMove == fright) {
+			this.move(PacManLauncher.RIGHT);
+		}
 	}
 
 	/**

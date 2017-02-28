@@ -10,7 +10,8 @@ class PacManLauncher {
   public static final String DOWN = "DOWN";
   public static final String LEFT = "LEFT";
   public static final String RIGHT = "RIGHT";
-  public static final int SPEED = 20;//doit etre un multiple de taille de case
+  public static final int SPEED_PACMAN = 20;//doit etre un multiple de taille de case
+  public static final int SPEED_GHOST = 20;//doit etre un multiple de taille de case
   private static final String ColorWall = "blue";
   private static final int NBR_LVL = 2;
 
@@ -97,16 +98,16 @@ class PacManLauncher {
       } else if (c.isRightPressed()) {
         this.pacman.move(this.RIGHT);
       }
-      
+
       this.collisionGhost();
-      
+
       for (Ghost g : this.ghost) {
         g.move();
       }
       Canvas.getCanvas().redraw();
     }
   }
-  
+
   private boolean collisionGhost () {
 	  boolean ret = false;
 	  int i = 0;
@@ -114,18 +115,18 @@ class PacManLauncher {
     	  //si pacman colision avec un fantome
 		  //perdre une vie a pacman && repositionner les entites
 		  if(this.pacman.colisionGhost(this.ghost[i])) {
-			  
+
 			  this.pacman.carryOff();
 			  this.pacman.setLocation(this.maps.getPMX(), this.maps.getPMY());
-			  
+
 			  ret = true;
 		  }
 		  i++;
       }
-	  
+
 	  if (ret) {//si une colision
 		  ArrayList<Integer[]> gs = this.maps.getPGhost();//tab des positions fantome
-		    
+
 		    int cpt = 0;
 		    for (Integer[] t : gs) {
 		      this.ghost[cpt].setLocation(t[0], t[1]);
@@ -133,8 +134,8 @@ class PacManLauncher {
 		      cpt++;
 		    }
 	  }
-	 
-	  
+
+
 	  return ret;
   }
 
