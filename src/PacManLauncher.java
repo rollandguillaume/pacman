@@ -13,7 +13,7 @@ class PacManLauncher {
   public static final int SPEED_PACMAN = 20;//doit etre un multiple de taille de case
   public static final int SPEED_GHOST = 20;//doit etre un multiple de taille de case
   private static final String ColorWall = "blue";
-  private static final int NBR_LVL = 2;
+  private static final int NBR_LVL = 3; // A changer !!!!
 
   public PacManLauncher () {
     this.maps = new Map(1);

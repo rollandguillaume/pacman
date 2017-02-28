@@ -165,14 +165,14 @@ public class Pacman extends Entite {
 		this.deplaceOuverture(this.dernierePosition);
 		this.mouthIsOpen = !this.mouthIsOpen;
 	}
-	
+
 	public boolean colisionGhost (Ghost f) {
 		boolean ret = false;
-		
+
 		int xf = f.getX();//x de f
 		int yf = f.getY();//y de f
 		int sf = f.getWidth();//size f
-		
+
 		int xt = this.getX();//x
 		int yt = this.getY();//y
 		int st = this.getWidth();//size
@@ -185,7 +185,7 @@ public class Pacman extends Entite {
 		if (posMinX && posMaxX && posMinY && posMaxY) {
 			ret = true;
 		}
-		
+
 		return ret;
 	}
 
