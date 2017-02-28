@@ -32,7 +32,7 @@ abstract class Entite {
   protected abstract void actionWithGom (Figure[][] map, int i, int j);
 
   /**
-	*	Check if pacman go in the wall
+	*	Check if pacman is going in the wall
 	*/
 	protected int[] checkColision (String toward, int dx, int dy) {
 		int[] ret = new int[2];
@@ -81,7 +81,8 @@ abstract class Entite {
 		return ret;
 	}
 
-
+  public abstract int getSpeed();
+  
   /**
 	* check if pacman go out the map
 	* return the race of move for pacman
@@ -95,7 +96,7 @@ abstract class Entite {
 		int x = this.getX();
 		int y = this.getY();
 
-		int speed = PacManLauncher.SPEED;
+		int speed = this.getSpeed();
 		int width = this.getWidth()/4;
 		int heightMap = Canvas.HEIGHT;
 		int widthMap = Canvas.WIDTH;

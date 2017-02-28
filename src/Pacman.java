@@ -60,6 +60,10 @@ public class Pacman extends Entite {
 		return this.score;
 	}
 
+	public int getSpeed () {
+		return PacManLauncher.SPEED_PACMAN;
+	}
+
 	public void draw () {
 		this.pac.draw();
 	}
