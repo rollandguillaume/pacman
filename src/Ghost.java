@@ -10,6 +10,7 @@ public class Ghost extends Entite {
 
 	private Figure[] figures;
 	private String previousMove;
+	private int compteurInversionMove;
 
 	/**
      * Create a new ghost.
@@ -21,6 +22,7 @@ public class Ghost extends Entite {
 		//super(size, size, x, y, color);
 
 		this.previousMove = PacManLauncher.UP;
+		this.initCompteur();
 
 		int diametrehead=(int)(size);
 		int heightbody=(int)(size/2.6);
@@ -47,9 +49,30 @@ public class Ghost extends Entite {
 	*	choisir une direction aleatoire
 	*/
 	public void move () {
-		if (checkCroisement(this.previousMove)) {
+		this.compteurInversionMove--;
+		if (this.compteurInversionMove == 0) {
+			switch (this.previousMove) {
+				case PacManLauncher.UP :
+					this.move(PacManLauncher.DOWN);
+					break;
+				case PacManLauncher.DOWN :
+					this.move(PacManLauncher.UP);
+					break;
+				case PacManLauncher.LEFT :
+					this.move(PacManLauncher.RIGHT);
+					break;
+				case PacManLauncher.RIGHT :
+					this.move(PacManLauncher.LEFT);
+					break;
+			}
+			this.initCompteur();
+		} else if (checkCroisement(this.previousMove)) {
 			this.move(this.previousMove);
 		}
+	}
+
+	public void initCompteur () {
+		this.compteurInversionMove = ((int) Math.random()*10) + 30;
 	}
 
 	/**
@@ -180,6 +203,7 @@ public class Ghost extends Entite {
 				toGo.add(f);
 			}
 		}
+
 		Figure nextMove = null;
 		double ran = Math.random()*toGo.size();
 		for (int i = 0; i < toGo.size(); i++) {

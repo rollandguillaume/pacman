@@ -220,7 +220,7 @@ public class Canvas
             shapes.get(shape).draw(graphic);
         }
         canvas.repaint();
-        wait(200);
+        wait(150);
     }
 
     /**

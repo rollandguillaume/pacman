@@ -104,6 +104,7 @@ class PacManLauncher {
       for (Ghost g : this.ghost) {
         g.move();
       }
+      this.collisionGhost();
       Canvas.getCanvas().redraw();
     }
   }
