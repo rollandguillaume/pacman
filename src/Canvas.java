@@ -232,7 +232,7 @@ public class Canvas
             shapes.get(shape).draw(graphic);
         }
         canvas.repaint();
-        wait(150);
+        wait(125);
     }
 
     /**

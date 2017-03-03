@@ -1,16 +1,21 @@
 import java.awt.*;
 import java.util.ArrayList;
+
 /**
- * Write a description of class ghost here.
+ * Cette classe représente l'entité fantome et toute ses caractéristique
  *
- * @author maxime
- * @version 2017.02.14
+ * @author RGM
+ * @version 03/03/2017
  */
 public class Ghost extends Entite {
 
+	/** Tableau des figure composants le fantome */
 	private Figure[] figures;
+	/** Le mouvement que vient d'effectuer le fantome */
 	private String previousMove;
+	/** Compteur qui va aléatoirement faire faire demi-tour au fantome */
 	private int compteurInversionMove;
+	private String name;
 
 	/**
      * Create a new ghost.
@@ -29,6 +34,7 @@ public class Ghost extends Entite {
 		int sizeleg=size/5;
 		int eyesize=(int)(size/3.5);
 		int insideeyesize=eyesize/2;
+		name = color;
 
 		figures = new Figure[9];
 
@@ -46,7 +52,7 @@ public class Ghost extends Entite {
 	}
 
 	/**
-	*	choisir une direction aleatoire
+	*	Choisir une direction aleatoire
 	*/
 	public void move () {
 		this.compteurInversionMove--;
@@ -66,13 +72,14 @@ public class Ghost extends Entite {
 					break;
 			}
 			this.initCompteur();
-		} else if (checkCroisement(this.previousMove)) {
-			this.move(this.previousMove);
+		} else {
+			checkCroisement(this.previousMove);
 		}
 	}
 
 	public void initCompteur () {
-		this.compteurInversionMove = ((int) Math.random()*10) + 30;
+		this.compteurInversionMove = (int) (Math.random()*30) + 20;
+		System.out.println(name + " : " + this.compteurInversionMove);
 	}
 
 	/**
@@ -116,82 +123,87 @@ public class Ghost extends Entite {
 		return PacManLauncher.SPEED_GHOST;
 	}
 
-	public boolean checkCroisement (String toward) {
+	public void checkCroisement (String toward) {
 
-		boolean ret = true;
+		boolean haveMoved = false;
 
 		Figure[][] map = this.map.getMap();
 
-		//CODE a factoriser dans Entite ...
-		int colonne = this.getX()/this.map.getTailleCase();
-		int ligne = this.getY()/this.map.getTailleCase();
-    if (colonne <= 0) {//gestion bord de map droite/gauche
-      colonne = 1;
-    } else if (colonne >= map.length-1) {
-      colonne = map.length-2;
-    }
-    if (ligne <= 0) {//gestion bord de map bas/haut
-      ligne = 1;
-    } else if (ligne >= map.length-1) {
-      ligne = map.length-2;
-    }
-		//FIN CODE a factoriser dans Entite ...
+		if(this.getX() % this.map.getTailleCase() == 0 && this.getY() % this.map.getTailleCase() == 0) {
 
-		Figure fup = map[ligne-1][colonne];
-		Figure fdown = map[ligne+1][colonne];
-		Figure fleft = map[ligne][colonne-1];
-		Figure fright = map[ligne][colonne+1];
+			//CODE a factoriser dans Entite ...
+			int colonne = this.getX()/this.map.getTailleCase();
+			int ligne = this.getY()/this.map.getTailleCase();
+	    if (colonne <= 0) {//gestion bord de map droite/gauche
+	      colonne = 1;
+	    } else if (colonne >= map.length-1) {
+	      colonne = map.length-2;
+	    }
+	    if (ligne <= 0) {//gestion bord de map bas/haut
+	      ligne = 1;
+	    } else if (ligne >= map.length-1) {
+	      ligne = map.length-2;
+	    }
+			//FIN CODE a factoriser dans Entite ...
 
-		ArrayList<Figure> caseAround =  new ArrayList<Figure>();
-		caseAround.add(fup);
-		caseAround.add(fdown);
-		caseAround.add(fleft);
-		caseAround.add(fright);
+			Figure fup = map[ligne-1][colonne];
+			Figure fdown = map[ligne+1][colonne];
+			Figure fleft = map[ligne][colonne-1];
+			Figure fright = map[ligne][colonne+1];
 
-		switch (toward) {
-			case PacManLauncher.UP :
-				if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
-					caseAround.remove(fdown);
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				} else if (fup.getClass().getName().compareTo("Wall") == 0) {
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				}
-				break;
-			case PacManLauncher.DOWN :
-				if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
-					caseAround.remove(fup);
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				} else if (fdown.getClass().getName().compareTo("Wall") == 0) {
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				}
-				break;
-			case PacManLauncher.LEFT :
-				if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
-					caseAround.remove(fright);
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				} else if (fleft.getClass().getName().compareTo("Wall") == 0) {
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				}
-				break;
-			case PacManLauncher.RIGHT :
-				if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
-					caseAround.remove(fleft);
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				} else if (fright.getClass().getName().compareTo("Wall") == 0) {
-					this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
-					ret = false;
-				}
-				break;
+			ArrayList<Figure> caseAround =  new ArrayList<Figure>();
+			caseAround.add(fup);
+			caseAround.add(fdown);
+			caseAround.add(fleft);
+			caseAround.add(fright);
+
+			switch (toward) {
+				case PacManLauncher.UP :
+					if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
+						caseAround.remove(fdown);
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					} else if (fup.getClass().getName().compareTo("Wall") == 0) {
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					}
+					break;
+				case PacManLauncher.DOWN :
+					if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
+						caseAround.remove(fup);
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					} else if (fdown.getClass().getName().compareTo("Wall") == 0) {
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					}
+					break;
+				case PacManLauncher.LEFT :
+					if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
+						caseAround.remove(fright);
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					} else if (fleft.getClass().getName().compareTo("Wall") == 0) {
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					}
+					break;
+				case PacManLauncher.RIGHT :
+					if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
+						caseAround.remove(fleft);
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					} else if (fright.getClass().getName().compareTo("Wall") == 0) {
+						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
+						haveMoved = true;
+					}
+					break;
+			}
 		}
 
-		return ret;
+		if (!haveMoved) {
+			this.move(this.previousMove);
+		}
 	}
 
 	public void chooseMove(String toward, ArrayList<Figure> listF, Figure fup, Figure fdown, Figure fleft, Figure fright) {
