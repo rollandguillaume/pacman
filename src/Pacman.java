@@ -9,7 +9,6 @@ public class Pacman extends Entite {
 	private static final String PACMAN_COLOR = "yellow"; // the Pacman default color
 	public static final int OUVERTURE_MIN = 10;
 	public static final int OUVERTURE_MAX = 40;
-	private static final int SCORE_GOMME = 10;
 	private static final int LIFE_START = 3;
 
 	private ArcCircle pac;
@@ -53,7 +52,7 @@ public class Pacman extends Entite {
 	}
 
 	public void upScore () {
-		this.score += this.SCORE_GOMME;
+		this.score += Gomme.SCORE_GOMME;
 	}
 
 	public int getScore () {
@@ -128,17 +127,27 @@ public class Pacman extends Entite {
 	}
 
 
+	/**
+   * definie les actions que l'entite va devoir realiser avec un objet de type gomme
+   * qui est en position (i,j) sur la Map
+   * @param Figure[][] map la carte ayant les objets de type gomme
+   * @param int        i   position colonne pour la Map
+   * @param int        j   position ligne dans la Map
+   * @pre (map[i][j] instanceof Gomme)
+   */
 	protected void actionWithGom (Figure[][] map, int i, int j) {
 		Figure f = map[i][j];
-		Gomme tmp = (Gomme)f;
-		if (tmp.getGomme() != null) {
-			tmp.setGomme(null);//plus de gomme
-			tmp.draw();
-			map[i][j] = tmp;
-			this.map.pickGom();
-			this.upScore();
-		} else {
-			//deja pas de gomme donc rien a faire
+		if (f instanceof Gomme) {
+			Gomme tmp = (Gomme)f;
+			if (tmp.getGomme() != null) {
+				tmp.setGomme(null);//plus de gomme
+				tmp.draw();
+				map[i][j] = tmp;
+				this.map.pickGom();
+				this.upScore();
+			} else {
+				//deja pas de gomme donc rien a faire
+			}
 		}
 	}
 

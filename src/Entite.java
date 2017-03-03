@@ -1,40 +1,107 @@
 
-
+/**
+* Une entite qui se deplace dans l'environnement de jeu pacman
+*
+* @pre
+* @inv position de entite comprise dans la taille de la fenetre
+*      largeur = hauteur
+*      speed <= largeurCase
+* @post
+*/
 abstract class Entite {
 
+  /**
+  * La carte dans laquelle l'entite evolue
+  */
   protected Map map;
 
+  /**
+  * dessine l'entite sur la carte
+  */
   public abstract void draw();
 
+  /**
+   * retourne la position x de l'entite
+   * @return la position x de l'entite
+   */
   public abstract int getX();
 
+  /**
+   * retourne la position y de l'entite
+   * @return la position y de l'entite
+   */
   public abstract int getY();
 
+  /**
+   * retourne la taille (largeur = longueur)
+   * @return la taille de l'entite
+   */
   public abstract int getWidth();
 
+  /**
+   * donne la carte a l'entite
+   * @param Map map la carte où évoluer
+   */
   public void setMap (Map map) {
 		this.map = map;
 	}
 
+  /**
+   * deplace l'entite en position (x,y) en fonction de sa position actuelle
+   * @param int x la position où aller
+   * @param int y la position où aller
+   * @pre ((x>0) && (x<Canvas.WIDTH)) && ((y>0) && (y<Canvas.HEIGHT))
+   */
   public void setLocation (int x, int y) {
-		int tmpx = x-this.getX();
+    int tmpx = x-this.getX();
 		int tmpy = y-this.getY();
 
 		this.move(tmpx, tmpy);
 	}
 
+  /**
+   * deplace l'entite dans la direction demander
+   *
+   * @param String toward direction demande
+   * @pre (toward.equals("UP") || toward.equals("DOWN") || toward.equals("LEFT") || toward.equals("RIGHT"))
+   */
   public abstract void move (String toward);
 
+  /**
+   * deplace l'entite d'une variation de (dx,dy)
+   * @param int dx le decalage x
+   * @param int dy le decalage y
+   */
   public abstract void move (int dx, int dy);
 
+  /**
+   * verifie que la figure est aussi d'un type correspondant
+   * pour une interaction avec l'entite
+   * @param  Figure f la figure avec qui faire potentiellement un interaction
+   * @return vrai si l'entite doit faire des actions avec la figure
+   */
   public abstract boolean typeCaseToCheck (Figure f);
 
+  /**
+   * definie les actions que l'entite va devoir realiser avec un objet de type gomme
+   * qui est en position (i,j) sur la Map
+   * @param Figure[][] map la carte ayant les objets de type gomme
+   * @param int        i   position colonne pour la Map
+   * @param int        j   position ligne dans la Map
+   */
   protected abstract void actionWithGom (Figure[][] map, int i, int j);
 
   /**
-	*	Check if pacman is going in the wall
-	*/
-	protected int[] checkColision (String toward, int dx, int dy) {
+   * verifie les colisions entre l'entite et plusieurs Figure
+   * les Figure sont celles presente sur Map et autour de l'Entite
+   *
+   * @param toward
+   * @param dx
+   * @param dy
+   * @pre (toward.equals("UP") || toward.equals("DOWN") || toward.equals("LEFT") || toward.equals("RIGHT"))
+   * @post (ret.length==2)
+   */
+  protected int[] checkColision (String toward, int dx, int dy) {
 		int[] ret = new int[2];
     Figure[][] map = this.map.getMap();
 
@@ -81,13 +148,22 @@ abstract class Entite {
 		return ret;
 	}
 
-  public abstract int getSpeed();
-  
   /**
-	* check if pacman go out the map
-	* return the race of move for pacman
+   * renvoi la vitesse de deplacement de l'entite
+   * @return la vitesse de deplacement de l'entite
+   */
+  public abstract int getSpeed();
+
+  /**
+	* verifie si l'entite va sortir de la Map
+	* sur un bord de cette Map
+	* retourne la variation de deplacement dx,dy a faire dans un tableau d'entier de 2 cases
+	* quand entite va sortir sur un bord, l'entite reapparait sur le bord opposé
 	*
+	* @param toward la direction dans laquelle se dirige
 	* @return ret {dx, dy}
+  * @pre (toward.equals("UP") || toward.equals("DOWN") || toward.equals("LEFT") || toward.equals("RIGHT"))
+	* @post (ret.length==2)
 	*/
 	protected int[] crossMap (String toward) {
 		int[] ret = new int[2];
@@ -130,23 +206,24 @@ abstract class Entite {
 
 		ret[0] = dx;
 		ret[1] = dy;
+    assert (ret.length==2) : "nombre de coordonnee doit etre egale a 2";
 		return ret;
 	}
 
 
   /**
-	*	check if is one colision with Figure
-	* avec le déplacement qui va etre effectuer
-	*
-	* @param f the figure
-	* @param dx le deplacement x a faire
-	* @param dy le deplacement y a faire
-	*
-	* @pre f is not null and is an instance of Wall or Gomme
+	*	verifie si une colision entre l'entite et une Figure (avec laquelle l'entite doit interagir)
+	*	va se réaliser cad si les coordonnees des 4 points de Entite rentre en partie
+	*	dans les coordonnees des 4 points de Figure
+	* @param f la Figure etant l'obstacle
+	* @param dx le deplacement x qui va se faire
+	* @param dy le deplacement y qui va se faire
+	* @pre (f!=null)
 	*/
 	protected boolean checkOneColision (Figure f, int dx, int dy) {
 		boolean ret = false;
 
+    assert (f!=null) : "Figure is null";
 		if (f != null) {
 			if (this.typeCaseToCheck(f)) {
 				int xf = f.getX();//x de f

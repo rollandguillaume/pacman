@@ -5,6 +5,8 @@ class Gomme extends Figure {
   private boolean supra;
   private static final String COLOR_WALK = "black";
   private static final String COLOR_GOM = "white";
+  public static final int SCORE_GOMME = 10;
+
 
   public Gomme (int size, int x, int y) {
     super(size, size, x, y, "black");
