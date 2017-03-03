@@ -79,7 +79,6 @@ public class Ghost extends Entite {
 
 	public void initCompteur () {
 		this.compteurInversionMove = (int) (Math.random()*30) + 20;
-		System.out.println(name + " : " + this.compteurInversionMove);
 	}
 
 	/**
