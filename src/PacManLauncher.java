@@ -10,8 +10,8 @@ class PacManLauncher {
   public static final String DOWN = "DOWN";
   public static final String LEFT = "LEFT";
   public static final String RIGHT = "RIGHT";
-  public static final int SPEED_PACMAN = 20;//doit etre un multiple de taille de case
-  public static final int SPEED_GHOST = 20;//doit etre un multiple de taille de case
+  public static final int SPEED_PACMAN = 10;//doit etre un multiple de taille de case
+  public static final int SPEED_GHOST = 10;//doit etre un multiple de taille de case
   private static final String ColorWall = "blue";
   private static final int NBR_LVL = 3; // A changer !!!!
 
