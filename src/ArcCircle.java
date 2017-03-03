@@ -3,11 +3,12 @@ import java.awt.geom.Arc2D;
 /**
  * A Arc Circle that can be manipulated and that draws itself on a canvas.
  *
- * @author maxime
+ * @author maxime,guillaume,remi
  * @version 2017.02.14
  *
  * @inv getWidth() == getHeight()
  */
+
 public class ArcCircle extends Figure {
 	private Double start;
 	private Double extent;
@@ -82,18 +83,20 @@ public class ArcCircle extends Figure {
         assert getWidth() == getHeight() : "Invariant violated: wrong dimensions";
     }
 
-
-
+    /**
+     * Change l'angle de début par un nouvel angle (en degres). 
+     * 
+     * @param angSt le nouvel angle en degres
+     */
     public void setAngleStart(double angSt){
     	this.start=angSt;
     }
-
+    /**
+     * Change l'angle de fin par un nouvel angle (en degres). 
+     * 
+     * @param angExt le nouvel angle en degres
+     */
     public void setAngleExtent(double angExt){
 			this.extent=angExt;
     }
-
-    /**
-     * Draw the square with current specifications on screen.
-     */
-
 }
