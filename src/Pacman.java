@@ -1,28 +1,30 @@
 /**
- * Write a description of class Pacman here.
+ * UN arc de cercle jaune avec une ouverture pour la bouche qui représente le pacman
  *
- * @author maxime
- * @version 2017.01.01
+ * @author maxime,guillaume,remi
+ * @version 2017.02.14
+ * @inv getColor().equals("yellow")
  */
 public class Pacman extends Entite {
 
 	private static final String PACMAN_COLOR = "yellow"; // the Pacman default color
-	public static final int OUVERTURE_MIN = 10;
-	public static final int OUVERTURE_MAX = 40;
+	public static final int OUVERTURE_MIN = 10;//ouverture minimal de la bouche de pacman
+	public static final int OUVERTURE_MAX = 40;//ouverture maximal de la bouche de pacman
 	private static final int SCORE_GOMME = 10;
-	private static final int LIFE_START = 3;
+	private static final int LIFE_START = 3;//nombre de vie de pacman
 
 	private ArcCircle pac;
-	private int ouverture;
-	private boolean mouthIsOpen;
+	private int ouverture;// ouverture de la bouche de pacman
+	private boolean mouthIsOpen;// ouverture de la bouche de pacman
 	private String dernierePosition;
-	private int life;
-	private int score;
+	private int life;// the pacman life
+	private int score;// the pacman score
 
 	/**
      * Create a new Figure_Pacman.
      *
      * @pre size >= 0
+     * @pre life >= 0
      */
 	public Pacman(int size, int x, int y) {
 		this.pac = new ArcCircle(size, x, y, PACMAN_COLOR, 0, 360);
@@ -37,7 +39,7 @@ public class Pacman extends Entite {
 	* remove one life of pacman
 	*
 	* @return if one life carry off
-	*	@pre this.life > 0
+	*@pre this.life > 0
 	*/
 	public boolean carryOff () {
 		boolean ret = false;
@@ -47,21 +49,60 @@ public class Pacman extends Entite {
 		}
 		return ret;
 	}
-
+	/**
+     * Give the pacman life
+     *
+     * @return the pacman life
+     */
 	public int getLife () {
 		return this.life;
 	}
-
+	/**
+	 * up the score to this.SCORE_Gomme.
+	 *
+	 */
 	public void upScore () {
 		this.score += this.SCORE_GOMME;
 	}
-
+	/**
+     * Give the pacman score
+     *
+     * @return the pacman score
+     */
 	public int getScore () {
 		return this.score;
 	}
-
+	/**
+     * Give the pacman speed
+     *
+     * @return the pacman speed
+     */
 	public int getSpeed () {
 		return PacManLauncher.SPEED_PACMAN;
+	}
+	/**
+     * Give the pacman x location in pixels
+     *
+     * @return the pacman x location in pixels
+     */
+	public int getX () {
+		return this.pac.getX();
+	}
+	/**
+     * Give the figure y location in pixels
+     *
+     * @return the figure y location in pixels
+     */
+	public int getY () {
+		return this.pac.getY();
+	}
+	/**
+     * Give the pacman width in pixels
+     *
+     * @return the pacman width in pixels
+     */
+	public int getWidth () {
+		return this.pac.getWidth();
 	}
 
 	public void draw () {
@@ -86,24 +127,18 @@ public class Pacman extends Entite {
 		this.deplaceOuverture(toward);
 		this.animateMouth();
 		this.move(dx, dy);//move the pacman
+		this.invariant();
 	}
-
-	public int getX () {
-		return this.pac.getX();
-	}
-
-	public int getY () {
-		return this.pac.getY();
-	}
-
-	public int getWidth () {
-		return this.pac.getWidth();
-	}
+	
 
 	public void move (int dx, int dy) {
 		this.pac.move(dx, dy);
 	}
-
+/**
+ * Change mouth pacman direction to the new mouth pacman direction .
+ * @param direction the new mouth pacman direction
+ * @pre direction.equals("UP") || direction.equals("LEFT") || direction.equals("DOWN")|| direction.equals("RIGHT")
+ */
 	private void deplaceOuverture(String direction) {
 		int as = 0;
 		int ae = 0;
@@ -138,7 +173,7 @@ public class Pacman extends Entite {
 			this.map.pickGom();
 			this.upScore();
 		} else {
-			//deja pas de gomme donc rien a faire
+			//deja pas de gomme donc rien a pacpacfaire
 		}
 	}
 
@@ -169,7 +204,7 @@ public class Pacman extends Entite {
 	public boolean colisionGhost (Ghost f) {
 		boolean ret = false;
 
-		int xf = f.getX();//x de f
+		int xf = f.getX();//x de fpac
 		int yf = f.getY();//y de f
 		int sf = f.getWidth();//size f
 
@@ -188,5 +223,12 @@ public class Pacman extends Entite {
 
 		return ret;
 	}
+	 /**
+     * Check the class invariant
+     */
+    protected void invariant() {
+    	this.pac.invariant();
+        assert this.pac.getColor().equals("yellow") : "Invariant violated: wrong dimensions";
+    }
 
 }

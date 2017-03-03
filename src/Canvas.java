@@ -233,6 +233,7 @@ public class Canvas
         }
         canvas.repaint();
         wait(125);
+
     }
 
     /**
