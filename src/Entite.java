@@ -1,7 +1,8 @@
 
 /**
 * Une entite qui se deplace dans l'environnement de jeu pacman
-*
+* @author maxime,guillaume,remi
+* @version 2017.02.14
 * @pre
 * @inv position de entite comprise dans la taille de la fenetre
 *      largeur = hauteur
