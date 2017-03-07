@@ -130,7 +130,7 @@ public class Canvas
     public void eraseString(String text, int x, int y)
     {
         Color original = graphic.getColor();
-        graphic.setColor(backgroundColour);
+        graphic.setColor(backgroundColor);
         graphic.drawString(text, x, y);   
         graphic.setColor(original);
         canvas.repaint();
