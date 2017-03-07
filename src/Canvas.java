@@ -131,21 +131,6 @@ public class Canvas
     }
 
     /**
-     * Erases a String on the Canvas.
-     * @param  text     the String to be displayed
-     * @param  x        x co-ordinate for text placement
-     * @param  y        y co-ordinate for text placement
-     */
-    public void eraseString(String text, int x, int y)
-    {
-        Color original = graphic.getColor();
-        graphic.setColor(backgroundColor);
-        graphic.drawString(text, x, y);
-        graphic.setColor(original);
-        canvas.repaint();
-    }
-
-    /**
      * Set the canvas visibility and brings canvas to the front of screen
      * when made visible. This method can also be used to bring an already
      * visible canvas to the front of other windows.
