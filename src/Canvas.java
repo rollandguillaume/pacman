@@ -109,29 +109,38 @@ public class Canvas
     {
         return rightPressed;
     }
+
+    public void resetMove(){
+      rightPressed = false;
+      leftPressed = false;
+      upPressed = false;
+      downPressed = false;
+    }
+
     /**
      * Draws a String on the Canvas.
-     * @param  text   the String to be displayed 
-     * @param  x      x co-ordinate for text placement 
+     * @param  text   the String to be displayed
+     * @param  x      x co-ordinate for text placement
      * @param  y      y co-ordinate for text placement
      */
-    public void drawString(String text, int x, int y)
+    public void printString(String text, int x, int y)
     {
-        graphic.drawString(text, x, y);   
+        graphic.setFont(new Font("Arial", Font.BOLD, 20));
+        graphic.drawString(text, x, y);
         canvas.repaint();
     }
 
     /**
      * Erases a String on the Canvas.
-     * @param  text     the String to be displayed 
-     * @param  x        x co-ordinate for text placement 
+     * @param  text     the String to be displayed
+     * @param  x        x co-ordinate for text placement
      * @param  y        y co-ordinate for text placement
      */
     public void eraseString(String text, int x, int y)
     {
         Color original = graphic.getColor();
-        graphic.setColor(backgroundColour);
-        graphic.drawString(text, x, y);   
+        graphic.setColor(backgroundColor);
+        graphic.drawString(text, x, y);
         graphic.setColor(original);
         canvas.repaint();
     }
@@ -251,12 +260,14 @@ public class Canvas
     /**
      * Redraw all shapes currently on the Canvas.
      */
-    public void redraw()
+    public void redraw(int score, int life)
     {
         erase();
         for(Object shape : objects) {
             shapes.get(shape).draw(graphic);
         }
+        printString("SCORE : "+score, 10, 20);
+        printString("LIFE : "+life, 10, 40);
         canvas.repaint();
         wait(125);
 

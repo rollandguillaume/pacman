@@ -32,6 +32,7 @@ class PacManLauncher {
       pml.upLvl(i+1);
       pml.draw();
       pml.animate();
+
     }
 
     System.out.println("SCORE="+pml.getPacman().getScore());
@@ -90,6 +91,7 @@ class PacManLauncher {
 
   public void animate () {
     Canvas c = Canvas.getCanvas();
+    c.resetMove();
     while ((this.maps.getNbGom() > 0) && (this.pacman.getLife() > 0)) {
       //swich the key press, move the pacman
       if (c.isUpPressed()) {
@@ -108,7 +110,7 @@ class PacManLauncher {
         g.move();
       }
       this.collisionGhost();
-      Canvas.getCanvas().redraw();
+      Canvas.getCanvas().redraw(this.pacman.getScore(), this.pacman.getLife());
     }
   }
 

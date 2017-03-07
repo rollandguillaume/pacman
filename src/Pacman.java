@@ -17,6 +17,8 @@ public class Pacman extends Entite {
 	private int ouverture;// ouverture de la bouche de pacman
 	private boolean mouthIsOpen;// ouverture de la bouche de pacman
 	private String dernierePosition;
+	private String toGo;// La direction que pacman veut prendre
+	private String previousMove;//Le dernier mouvement de pacman
 	private int life;// the pacman life
 	private int score;// the pacman score
 
@@ -116,24 +118,97 @@ public class Pacman extends Entite {
 		int dx = 0;
 		int dy = 0;
 
-		int[] crossMap = this.crossMap(toward);
-		dx = crossMap[0];
-		dy = crossMap[1];
+		if (this.testMove(toward)) {
 
-		crossMap = this.checkColision(toward, dx, dy);
-		dx = crossMap[0];
-		dy = crossMap[1];
+			int[] crossMap = this.crossMap(toward);
+			dx = crossMap[0];
+			dy = crossMap[1];
 
-		this.deplaceOuverture(toward);
-		this.animateMouth();
-		this.move(dx, dy);//move the pacman
+			crossMap = this.checkColision(toward, dx, dy);
+			dx = crossMap[0];
+			dy = crossMap[1];
+
+			this.deplaceOuverture(toward);
+			this.animateMouth();
+			this.move(dx, dy);//move the pacman
+			this.previousMove = toward;
+		} else {
+			int[] crossMap = this.crossMap(this.previousMove);
+			dx = crossMap[0];
+			dy = crossMap[1];
+
+			crossMap = this.checkColision(this.previousMove, dx, dy);
+			dx = crossMap[0];
+			dy = crossMap[1];
+
+			this.deplaceOuverture(this.previousMove);
+			this.animateMouth();
+			this.move(dx, dy);//move the pacman
+		}
 		this.invariant();
 	}
 
+	private boolean testMove(String toward) {
+
+		boolean haveMoved = false;
+
+		Figure[][] map = this.map.getMap();
+
+		if(this.getX() % this.map.getTailleCase() == 0 && this.getY() % this.map.getTailleCase() == 0) {
+
+			int colonne = this.getX()/this.map.getTailleCase();
+			int ligne = this.getY()/this.map.getTailleCase();
+	    if (colonne <= 0) {//gestion bord de map droite/gauche
+	      colonne = 1;
+	    } else if (colonne >= map.length-1) {
+	      colonne = map.length-2;
+	    }
+	    if (ligne <= 0) {//gestion bord de map bas/haut
+	      ligne = 1;
+	    } else if (ligne >= map.length-1) {
+	      ligne = map.length-2;
+	    }
+
+			Figure fup = map[ligne-1][colonne];
+			Figure fdown = map[ligne+1][colonne];
+			Figure fleft = map[ligne][colonne-1];
+			Figure fright = map[ligne][colonne+1];
+
+			switch (toward) {
+				case PacManLauncher.UP :
+					if (fup.getClass().getName().compareTo("Wall") != 0) {
+						haveMoved = true;
+					} else {
+					}
+					break;
+				case PacManLauncher.DOWN :
+					if (fdown.getClass().getName().compareTo("Wall") != 0) {
+						haveMoved = true;
+					} else {
+					}
+					break;
+				case PacManLauncher.LEFT :
+					if (fleft.getClass().getName().compareTo("Wall") != 0) {
+						haveMoved = true;
+					} else {
+					}
+					break;
+				case PacManLauncher.RIGHT :
+					if (fright.getClass().getName().compareTo("Wall") != 0) {
+						haveMoved = true;
+					} else {
+					}
+					break;
+			}
+		}
+
+		return haveMoved;
+	}
 
 	public void move (int dx, int dy) {
 		this.pac.move(dx, dy);
 	}
+
 /**
  * Change mouth pacman direction to the new mouth pacman direction .
  * @param direction the new mouth pacman direction
