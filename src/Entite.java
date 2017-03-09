@@ -89,6 +89,7 @@ abstract class Entite {
    * @param Figure[][] map la carte ayant les objets de type gomme
    * @param int        i   position colonne pour la Map
    * @param int        j   position ligne dans la Map
+   * *@pre (i>=0 && j>=0)
    */
   protected abstract void actionWithGom (Figure[][] map, int i, int j);
 
@@ -106,18 +107,9 @@ abstract class Entite {
 		int[] ret = new int[2];
     Figure[][] map = this.map.getMap();
 
-		int colonne = this.getX()/this.map.getTailleCase();
-		int ligne = this.getY()/this.map.getTailleCase();
-    if (colonne <= 0) {//gestion bord de map droite/gauche
-      colonne = 1;
-    } else if (colonne >= map.length-1) {
-      colonne = map.length-2;
-    }
-    if (ligne <= 0) {//gestion bord de map bas/haut
-      ligne = 1;
-    } else if (ligne >= map.length-1) {
-      ligne = map.length-2;
-    }
+    int[] colLign = this.getColLign();
+    int colonne = colLign[0];
+    int ligne = colLign[1];
 
     for (int i=colonne-1; i<=colonne+1; i++) {
       for (int j=ligne-1; j<=ligne+1; j++) {
@@ -148,6 +140,31 @@ abstract class Entite {
 		ret[1] = dy;
 		return ret;
 	}
+
+  /**
+   * retourne la position
+   * en fonction de la map
+   * et de la taille des cases
+   * la position fictive de l'Entite sur cette map
+   */
+  public int[] getColLign () {
+    Figure[][] map = this.map.getMap();
+    int colonne = this.getX()/this.map.getTailleCase();
+		int ligne = this.getY()/this.map.getTailleCase();
+    if (colonne <= 0) {//gestion bord de map droite/gauche
+      colonne = 1;
+    } else if (colonne >= map.length-1) {
+      colonne = map.length-2;
+    }
+    if (ligne <= 0) {//gestion bord de map bas/haut
+      ligne = 1;
+    } else if (ligne >= map.length-1) {
+      ligne = map.length-2;
+    }
+
+    int[] ret = {colonne,ligne};
+    return ret;
+  }
 
   /**
    * renvoi la vitesse de deplacement de l'entite

@@ -9,22 +9,23 @@ class PacManLauncher {
   public static final String DOWN = "DOWN";
   public static final String LEFT = "LEFT";
   public static final String RIGHT = "RIGHT";
-  public static final int SPEED_PACMAN = 10;//doit etre un multiple de taille de case
-  public static final int SPEED_GHOST = 10;//doit etre un multiple de taille de case
   private static final int NBR_LVL = 3; // A changer !!!!
 
+  /**
+   * initialize au lancement le jeu pacman
+   * en creant la map de niveau 1
+   * le pacman de toute la partie
+   * les fantomes du niveau
+   */
   public PacManLauncher () {
     this.maps = new Map(1);
-
     this.fillGhost();
-
     this.pacman = new Pacman(this.maps.getTailleCase(), this.maps.getPMX(), this.maps.getPMY());
     this.pacman.setMap(this.maps);
   }
 
   public static void main(String[] args) {
     Canvas c = Canvas.getCanvas();
-
     PacManLauncher pml = new PacManLauncher();
     pml.draw();
     pml.animate();//lvl1
@@ -32,7 +33,6 @@ class PacManLauncher {
       pml.upLvl(i+1);
       pml.draw();
       pml.animate();
-
     }
 
     System.out.println("SCORE="+pml.getPacman().getScore());
@@ -40,6 +40,10 @@ class PacManLauncher {
     System.out.println("~~~END~~~");
   }
 
+  /**
+   * change la map en prenant le niveau passe en parametre
+   * @param int lvl le niveau souhaité
+   */
   public void upLvl (int lvl) {
     this.maps = new Map(lvl);
     this.fillGhost();
@@ -47,6 +51,10 @@ class PacManLauncher {
     this.pacman.setMap(this.maps);
   }
 
+  /**
+   * creer tous les fantomes necessaires
+   * en fonction de l'objet this.map
+   */
   public void fillGhost () {
     ArrayList<Integer[]> gs = this.maps.getPGhost();//tab des positions fantome
     this.ghost = new Ghost[gs.size()];
@@ -68,6 +76,12 @@ class PacManLauncher {
     }
   }
 
+  /**
+   * dessine la map
+   * et pacman
+   * et tous les fantomes
+   * d'un niveau
+   */
   public void draw () {
     for (Figure[] fl : this.maps.getMap()) {
       for (Figure f : fl) {
@@ -84,11 +98,21 @@ class PacManLauncher {
     }
   }
 
+  /**
+   * retourne le pacman de la partie
+   * @return le pacman de la partie
+   */
   public Pacman getPacman () {
     return this.pacman;
   }
 
-
+  /**
+   * lance le deroulement du jeu
+   * en regardant la touche utiliser par l'utilisateur pour deplacer pacman
+   * puis deplace les fantomes
+   * et verifie les colisions eventuelles entre pacman et les fantomes
+   * (sans redessiner toute la map)
+   */
   public void animate () {
     Canvas c = Canvas.getCanvas();
     c.resetMove();
@@ -114,6 +138,12 @@ class PacManLauncher {
     }
   }
 
+  /**
+   * verifie s'il existe une colision entre pacman et l'un des fantome
+   * si oui alors pacman perd une vie
+   * et toutes les Entites sont repositionner à leur point de départ pour le niveau en cours
+   * @return true si une colision existe
+   */
   private boolean collisionGhost () {
 	  boolean ret = false;
 	  int i = 0;
@@ -128,7 +158,7 @@ class PacManLauncher {
 			  ret = true;
 		  }
 		  i++;
-      }
+    }
 
 	  if (ret) {//si une colision
 		  ArrayList<Integer[]> gs = this.maps.getPGhost();//tab des positions fantome

@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Cette classe permet, à partir d'un fichier .map, de créer toute les figures d'un niveau
+ * Cette classe permet, à partir d'un fichier .map, de créer toutes les figures d'un niveau
  *
  * @author RGM
  * @version 03/03/2014

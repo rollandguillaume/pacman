@@ -1,5 +1,8 @@
 /**
+ * Class representant pacman
  * UN arc de cercle jaune avec une ouverture pour la bouche qui représente le pacman
+ * avec un nombre de vie
+ * et une vitesse fixe
  *
  * @author maxime,guillaume,remi
  * @version 2017.02.14
@@ -10,10 +13,10 @@ public class Pacman extends Entite {
 	private static final String PACMAN_COLOR = "yellow"; // the Pacman default color
 	public static final int OUVERTURE_MIN = 10;//ouverture minimal de la bouche de pacman
 	public static final int OUVERTURE_MAX = 40;//ouverture maximal de la bouche de pacman
-	private static final int SCORE_GOMME = 10;
 	private static final int LIFE_START = 3;//nombre de vie de pacman
+	public static final int SPEED_PACMAN = 10;//doit etre un multiple de taille de case
 
-	private ArcCircle pac;
+	private ArcCircle pac;//representation graphique de pacman
 	private int ouverture;// ouverture de la bouche de pacman
 	private boolean mouthIsOpen;// ouverture de la bouche de pacman
 	private String dernierePosition;
@@ -23,11 +26,14 @@ public class Pacman extends Entite {
 	private int score;// the pacman score
 
 	/**
-     * Create a new Figure_Pacman.
-     *
-     * @pre size >= 0
-     * @pre life >= 0
-     */
+   * Create a new Figure_Pacman.
+   *
+   * @param size taille de pacman
+	 * @param x position absolue x de pacman
+	 * @param y position absolue y de pacman
+   * @pre size >= 0
+   * @post life >= 0
+   */
 	public Pacman(int size, int x, int y) {
 		this.pac = new ArcCircle(size, x, y, PACMAN_COLOR, 0, 360);
 		//initialize the direction of pacman
@@ -41,7 +47,6 @@ public class Pacman extends Entite {
 	* remove one life of pacman
 	*
 	* @return if one life carry off
-	*@pre this.life > 0
 	*/
 	public boolean carryOff () {
 		boolean ret = false;
@@ -52,74 +57,76 @@ public class Pacman extends Entite {
 		return ret;
 	}
 	/**
-     * Give the pacman life
-     *
-     * @return the pacman life
-     */
+   * Give the pacman life
+   *
+   * @return the pacman life
+   */
 	public int getLife () {
 		return this.life;
 	}
 	/**
 	 * up the score to this.SCORE_Gomme.
-	 *
 	 */
 	public void upScore () {
 		this.score += Gomme.SCORE_GOMME;
 	}
 	/**
-     * Give the pacman score
-     *
-     * @return the pacman score
-     */
+   * Give the pacman score
+   *
+   * @return the pacman score
+   */
 	public int getScore () {
 		return this.score;
 	}
 	/**
-     * Give the pacman speed
-     *
-     * @return the pacman speed
-     */
+   * Give the pacman speed
+   *
+   * @return the pacman speed
+   */
 	public int getSpeed () {
-		return PacManLauncher.SPEED_PACMAN;
+		return Pacman.SPEED_PACMAN;
 	}
 	/**
-     * Give the pacman x location in pixels
-     *
-     * @return the pacman x location in pixels
-     */
+   * Give the pacman x location in pixels
+   *
+   * @return the pacman x location in pixels
+   */
 	public int getX () {
 		return this.pac.getX();
 	}
 	/**
-     * Give the figure y location in pixels
-     *
-     * @return the figure y location in pixels
-     */
+   * Give the figure y location in pixels
+   *
+   * @return the figure y location in pixels
+   */
 	public int getY () {
 		return this.pac.getY();
 	}
 	/**
-     * Give the pacman width in pixels
-     *
-     * @return the pacman width in pixels
-     */
+   * Give the pacman width in pixels
+   *
+   * @return the pacman width in pixels
+   */
 	public int getWidth () {
 		return this.pac.getWidth();
 	}
 
+	/**
+	 * dessine la representation de pacman
+	 */
 	public void draw () {
 		this.pac.draw();
 	}
 
 	/**
 	* move the pacman and all figures which blend him
+	* @param toward la direction vers laquelle pacman devrait aller
 	*/
 	public void move (String toward) {
 		int dx = 0;
 		int dy = 0;
 
 		if (this.testMove(toward)) {
-
 			int[] crossMap = this.crossMap(toward);
 			dx = crossMap[0];
 			dy = crossMap[1];
@@ -148,26 +155,19 @@ public class Pacman extends Entite {
 		this.invariant();
 	}
 
-	private boolean testMove(String toward) {
-
+	/**
+	 * verifie si un deplacement est possible
+	 * @param  String toward la direction vers laquelle pacman devrait aller
+	 * @return vrai si le deplacement est possible
+	 */
+	private boolean testMove (String toward) {
 		boolean haveMoved = false;
-
 		Figure[][] map = this.map.getMap();
 
 		if(this.getX() % this.map.getTailleCase() == 0 && this.getY() % this.map.getTailleCase() == 0) {
-
-			int colonne = this.getX()/this.map.getTailleCase();
-			int ligne = this.getY()/this.map.getTailleCase();
-	    if (colonne <= 0) {//gestion bord de map droite/gauche
-	      colonne = 1;
-	    } else if (colonne >= map.length-1) {
-	      colonne = map.length-2;
-	    }
-	    if (ligne <= 0) {//gestion bord de map bas/haut
-	      ligne = 1;
-	    } else if (ligne >= map.length-1) {
-	      ligne = map.length-2;
-	    }
+			int[] colLign = this.getColLign();
+	    int colonne = colLign[0];
+	    int ligne = colLign[1];
 
 			Figure fup = map[ligne-1][colonne];
 			Figure fdown = map[ligne+1][colonne];
@@ -205,6 +205,12 @@ public class Pacman extends Entite {
 		return haveMoved;
 	}
 
+	/**
+	 * deplace l'entite d'un variation dx et dy
+	 * relative a la position actuelle de l'Entite
+	 * @param int dx le deplacement relatif à x
+	 * @param int dy le deplacement relatif à y
+	 */
 	public void move (int dx, int dy) {
 		this.pac.move(dx, dy);
 	}
@@ -244,7 +250,7 @@ public class Pacman extends Entite {
    * @param Figure[][] map la carte ayant les objets de type gomme
    * @param int        i   position colonne pour la Map
    * @param int        j   position ligne dans la Map
-   * @pre (map[i][j] instanceof Gomme)
+   * @pre (map[i][j] instanceof Gomme) && (i>=0 && j>=0)
    */
 	protected void actionWithGom (Figure[][] map, int i, int j) {
 		Figure f = map[i][j];
@@ -286,6 +292,11 @@ public class Pacman extends Entite {
 		this.mouthIsOpen = !this.mouthIsOpen;
 	}
 
+	/**
+	 * verifie si une colission avec un fantome est effective
+	 * @param  Ghost f le potentiel fantome sur le chemin de pacman
+	 * @return vrai si une collision est effective
+	 */
 	public boolean colisionGhost (Ghost f) {
 		boolean ret = false;
 
@@ -308,12 +319,13 @@ public class Pacman extends Entite {
 
 		return ret;
 	}
-	 /**
-     * Check the class invariant
-     */
-    protected void invariant() {
-    	this.pac.invariant();
-        assert this.pac.getColor().equals("yellow") : "Invariant violated: wrong dimensions";
-    }
+
+	/**
+	* Check the class invariant
+	*/
+	protected void invariant() {
+		this.pac.invariant();
+		assert this.pac.getColor().equals("yellow") : "Invariant violated: wrong dimensions";
+	}
 
 }

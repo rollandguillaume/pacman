@@ -126,6 +126,7 @@ public class Canvas
     public void printString(String text, int x, int y)
     {
         graphic.setFont(new Font("Arial", Font.BOLD, 20));
+        graphic.setColor(Color.WHITE);
         graphic.drawString(text, x, y);
         canvas.repaint();
     }
@@ -255,7 +256,6 @@ public class Canvas
         printString("LIFE : "+life, 10, 40);
         canvas.repaint();
         wait(125);
-
     }
 
     /**

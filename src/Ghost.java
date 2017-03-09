@@ -15,17 +15,18 @@ public class Ghost extends Entite {
 	private String previousMove;
 	/** Compteur qui va aléatoirement faire faire demi-tour au fantome */
 	private int compteurInversionMove;
-	private String name;
+	//private String name;
+
+	public static final int SPEED_GHOST = 10;//doit etre un multiple de taille de case
+
 
 	/**
-     * Create a new ghost.
-     *
-     * @pre size >= 0
-     * @pre color different of ("white")
-     */
+   * Create a new ghost.
+   *
+   * @pre size >= 0
+   * @pre color different of ("white")
+   */
 	public Ghost(int size, int x, int y, String color) {
-		//super(size, size, x, y, color);
-
 		this.previousMove = PacManLauncher.UP;
 		this.initCompteur();
 
@@ -34,7 +35,6 @@ public class Ghost extends Entite {
 		int sizeleg=size/5;
 		int eyesize=(int)(size/3.5);
 		int insideeyesize=eyesize/2;
-		name = color;
 
 		figures = new Figure[9];
 
@@ -77,13 +77,20 @@ public class Ghost extends Entite {
 		}
 	}
 
+	/**
+	 * initialize le compteur de changement de direction d'un fantome
+	 * avec un temps aleatoire compris entre un nombre de raffraichissement de la fenetre
+	 */
 	public void initCompteur () {
 		this.compteurInversionMove = (int) (Math.random()*30) + 20;
 	}
 
 	/**
-	*	se déplacer dans la direction demandee
-	*/
+   * deplace l'entite dans la direction demander
+   *
+   * @param String toward direction demande
+   * @pre (toward.equals("UP") || toward.equals("DOWN") || toward.equals("LEFT") || toward.equals("RIGHT"))
+   */
 	public void move (String toward) {
 		this.previousMove = toward;
 		int dx = 0;
@@ -100,50 +107,61 @@ public class Ghost extends Entite {
 		this.move(dx, dy);//move the pacman
 	}
 
+	/**
+	 * deplace l'entite d'une variation de (dx,dy)
+	 * @param int dx le decalage x
+	 * @param int dy le decalage y
+	 */
 	public void move (int dx, int dy) {
 		for (Figure figure : figures) {
         figure.move(dx, dy);
     }
 	}
 
+	/**
+	 * retourne la position x de l'entite
+	 * @return la position x de l'entite
+	 */
 	public int getX () {
 		return this.figures[0].getX();
 	}
 
+	/**
+	 * retourne la position y de l'entite
+	 * @return la position y de l'entite
+	 */
 	public int getY () {
 		return this.figures[0].getY();
 	}
 
+	/**
+	 * retourne la taille de l'Entite fantome
+	 * @return la taille de Ghost
+	 */
 	public int getWidth () {
 		return this.figures[0].getWidth();
 	}
 
+	/**
+	 * retourne la vitesse de deplacement d'un fantome
+	 * @return la vitesse de Ghost
+	 */
 	public int getSpeed () {
-		return PacManLauncher.SPEED_GHOST;
+		return Ghost.SPEED_GHOST;
 	}
 
+	/**
+	 * [checkCroisement description]
+	 * @param String toward [description]
+	 */
 	public void checkCroisement (String toward) {
-
 		boolean haveMoved = false;
-
 		Figure[][] map = this.map.getMap();
 
 		if(this.getX() % this.map.getTailleCase() == 0 && this.getY() % this.map.getTailleCase() == 0) {
-
-			//CODE a factoriser dans Entite ...
-			int colonne = this.getX()/this.map.getTailleCase();
-			int ligne = this.getY()/this.map.getTailleCase();
-	    if (colonne <= 0) {//gestion bord de map droite/gauche
-	      colonne = 1;
-	    } else if (colonne >= map.length-1) {
-	      colonne = map.length-2;
-	    }
-	    if (ligne <= 0) {//gestion bord de map bas/haut
-	      ligne = 1;
-	    } else if (ligne >= map.length-1) {
-	      ligne = map.length-2;
-	    }
-			//FIN CODE a factoriser dans Entite ...
+			int[] colLign = this.getColLign();
+	    int colonne = colLign[0];
+	    int ligne = colLign[1];
 
 			Figure fup = map[ligne-1][colonne];
 			Figure fdown = map[ligne+1][colonne];
