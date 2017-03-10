@@ -19,6 +19,7 @@ public class Pacman extends Entite {
 	public static final int OUVERTURE_MAX = 40;//ouverture maximal de la bouche de pacman
 	private static final int LIFE_START = 3;//nombre de vie de pacman
 	public static final int SPEED_PACMAN = 10;//doit etre un multiple de taille de case
+	private static final int PALIER = 10000;//palier pour gagner une vie
 
 	private ArcCircle pac;//representation graphique de pacman
 	private int ouverture;// ouverture de la bouche de pacman
@@ -29,6 +30,7 @@ public class Pacman extends Entite {
 	private String previousMove;//Le dernier mouvement de pacman
 	private int life;// the pacman life
 	private int score;// the pacman score
+	private int palier;//prochain palier pour gagner une vie
 
 	/**
    * Create a new Figure_Pacman.
@@ -48,6 +50,7 @@ public class Pacman extends Entite {
 		this.life = this.LIFE_START;
 		this.supra = false;
 		this.previousMove = PacManLauncher.LEFT;
+		this.palier = Pacman.PALIER;
 	}
 
 	/**
@@ -76,6 +79,10 @@ public class Pacman extends Entite {
 	 */
 	public void upScoreGomme () {
 		this.score += Gomme.SCORE_GOMME;
+		if (this.score >= this.palier) {
+			this.life++;
+			this.palier += Pacman.PALIER;
+		}
 	}
 	/**
 	 * up the score to this.SCORE_Gomme.

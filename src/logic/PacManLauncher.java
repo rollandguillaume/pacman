@@ -12,7 +12,7 @@ class PacManLauncher {
   public static final String DOWN = "DOWN";
   public static final String LEFT = "LEFT";
   public static final String RIGHT = "RIGHT";
-  private static final int NBR_LVL = 3; // A changer !!!!
+  private static final int NBR_LVL = 3; // TODO : compter le nbr de fichier .map ??
 
   /**
    * initialize au lancement le jeu pacman
@@ -27,16 +27,21 @@ class PacManLauncher {
     this.pacman.setMap(this.maps);
   }
 
-  public static void main(String[] args) {
+  public static void main (String[] args) {
     Canvas c = Canvas.getCanvas();
     PacManLauncher pml = new PacManLauncher();
     pml.draw();
     pml.animate(); // Le lvl 1
 
-    for (int i=1; i<PacManLauncher.NBR_LVL; i++) {
-      pml.upLvl(i+1);
+    int i = 2;
+    while ((pml.getPacman().getLife() > 0)) {
+      pml.upLvl(i);
       pml.draw();
       pml.animate();
+      i++;
+      if (i > PacManLauncher.NBR_LVL) {
+        i=1;
+      }
     }
 
     if (Integer.valueOf(Score.getScore()) < pml.getPacman().getScore()) {
