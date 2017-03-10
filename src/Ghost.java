@@ -11,13 +11,17 @@ public class Ghost extends Entite {
 
 	/** Tableau des figure composants le fantome */
 	private Figure[] figures;
+	/** La couleur du fantome */
+	private String couleur;
 	/** Le mouvement que vient d'effectuer le fantome */
 	private String previousMove;
 	/** Compteur qui va aléatoirement faire faire demi-tour au fantome */
 	private int compteurInversionMove;
-	//private String name;
+	/** Compteur du temps de peur des fantomes */
+	private int compteurPeur;
 
 	public static final int SPEED_GHOST = 10;//doit etre un multiple de taille de case
+	public static final int SCORE_FANTOME = 100;
 
 
 	/**
@@ -29,6 +33,9 @@ public class Ghost extends Entite {
 	public Ghost(int size, int x, int y, String color) {
 		this.previousMove = PacManLauncher.UP;
 		this.initCompteur();
+
+		this.compteurPeur = 0;
+		this.couleur = color;
 
 		int diametrehead=(int)(size);
 		int heightbody=(int)(size/2.6);
@@ -55,25 +62,36 @@ public class Ghost extends Entite {
 	*	Choisir une direction aleatoire
 	*/
 	public void move () {
-		this.compteurInversionMove--;
-		if (this.compteurInversionMove == 0) {
-			switch (this.previousMove) {
-				case PacManLauncher.UP :
-					this.move(PacManLauncher.DOWN);
-					break;
-				case PacManLauncher.DOWN :
-					this.move(PacManLauncher.UP);
-					break;
-				case PacManLauncher.LEFT :
-					this.move(PacManLauncher.RIGHT);
-					break;
-				case PacManLauncher.RIGHT :
-					this.move(PacManLauncher.LEFT);
-					break;
+		if (this.compteurPeur == 0) {
+			this.setEtatNormal();
+		}
+		if (this.compteurPeur % 2 == 1 || this.compteurPeur == 0){
+			if (this.compteurPeur > 0) {
+				this.compteurPeur--;
 			}
-			this.initCompteur();
-		} else {
-			checkCroisement(this.previousMove);
+			this.compteurInversionMove--;
+			if (this.compteurInversionMove == 0) {
+				switch (this.previousMove) {
+					case PacManLauncher.UP :
+						this.move(PacManLauncher.DOWN);
+						break;
+					case PacManLauncher.DOWN :
+						this.move(PacManLauncher.UP);
+						break;
+					case PacManLauncher.LEFT :
+						this.move(PacManLauncher.RIGHT);
+						break;
+					case PacManLauncher.RIGHT :
+						this.move(PacManLauncher.LEFT);
+						break;
+				}
+				this.initCompteur();
+			} else {
+				checkCroisement(this.previousMove);
+			}
+		}
+		else {
+			this.compteurPeur--;
 		}
 	}
 
@@ -104,7 +122,7 @@ public class Ghost extends Entite {
 		dx = crossMap[0];
 		dy = crossMap[1];
 
-		this.move(dx, dy);//move the pacman
+		this.move(dx, dy);//move the ghost
 	}
 
 	/**
@@ -116,6 +134,23 @@ public class Ghost extends Entite {
 		for (Figure figure : figures) {
         figure.move(dx, dy);
     }
+	}
+
+	/**
+	 * Met le fantome en etat de peur
+	 */
+	public void setEtatPeur() {
+		this.compteurPeur = 60;
+		for (int i = 0; i < 5; i++) {
+			figures[i].setColor("blue");
+		}
+	}
+
+	public void setEtatNormal() {
+		this.compteurPeur = 0;
+		for (int i = 0; i < 5; i++) {
+			figures[i].setColor(this.couleur);
+		}
 	}
 
 	/**
@@ -148,6 +183,14 @@ public class Ghost extends Entite {
 	 */
 	public int getSpeed () {
 		return Ghost.SPEED_GHOST;
+	}
+
+	/**
+	 * retourne la vitesse de deplacement d'un fantome
+	 * @return la vitesse de Ghost
+	 */
+	public int getPeur () {
+		return this.compteurPeur;
 	}
 
 	/**

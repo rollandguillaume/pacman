@@ -130,6 +130,13 @@ class PacManLauncher {
         this.pacman.move(this.RIGHT);
       }
 
+      if (this.pacman.getPMSupra()) {
+        for (Ghost g : this.ghost) {
+          g.setEtatPeur();
+        }
+        this.pacman.resetSupra();
+      }
+
       this.collisionGhost();
 
       for (Ghost g : this.ghost) {
@@ -152,12 +159,26 @@ class PacManLauncher {
 	  while (!ret && (i<this.ghost.length)) {
     	  //si pacman colision avec un fantome
 		  //perdre une vie a pacman && repositionner les entites
-		  if(this.pacman.colisionGhost(this.ghost[i])) {
+		  if(this.pacman.colisionGhost(this.ghost[i]) && this.ghost[i].getPeur() == 0) {
 
 			  this.pacman.carryOff();
 			  this.pacman.setLocation(this.maps.getPMX(), this.maps.getPMY());
 
 			  ret = true;
+		  }
+      else if(this.pacman.colisionGhost(this.ghost[i]) && this.ghost[i].getPeur() > 0) {
+
+        ArrayList<Integer[]> gs = this.maps.getPGhost();
+
+        int cpt = 0;
+		    for (Integer[] t : gs) {
+          if (cpt == i) {
+            this.ghost[cpt].setLocation(t[0], t[1]);
+            this.ghost[cpt].setEtatNormal();
+            this.pacman.upScoreFantomme();
+          }
+		      cpt++;
+		    }
 		  }
 		  i++;
     }

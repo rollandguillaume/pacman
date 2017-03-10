@@ -19,6 +19,7 @@ public class Pacman extends Entite {
 	private ArcCircle pac;//representation graphique de pacman
 	private int ouverture;// ouverture de la bouche de pacman
 	private boolean mouthIsOpen;// ouverture de la bouche de pacman
+	private boolean supra;// est ce que pacman a mangé une super gomme
 	private String dernierePosition;
 	private String toGo;// La direction que pacman veut prendre
 	private String previousMove;//Le dernier mouvement de pacman
@@ -41,6 +42,8 @@ public class Pacman extends Entite {
 		this.ouverture = this.OUVERTURE_MIN;
 		this.deplaceOuverture(PacManLauncher.LEFT);
 		this.life = this.LIFE_START;
+		this.supra = false;
+		this.previousMove = PacManLauncher.LEFT;
 	}
 
 	/**
@@ -67,8 +70,14 @@ public class Pacman extends Entite {
 	/**
 	 * up the score to this.SCORE_Gomme.
 	 */
-	public void upScore () {
+	public void upScoreGomme () {
 		this.score += Gomme.SCORE_GOMME;
+	}
+	/**
+	 * up the score to this.SCORE_Gomme.
+	 */
+	public void upScoreFantomme () {
+		this.score += Ghost.SCORE_FANTOME;
 	}
 	/**
    * Give the pacman score
@@ -261,11 +270,23 @@ public class Pacman extends Entite {
 				tmp.draw();
 				map[i][j] = tmp;
 				this.map.pickGom();
-				this.upScore();
+				this.upScoreGomme();
+				if (tmp.getSupra()) {
+					// Mettre tous les fantome en peur
+					this.supra = true;
+				}
 			} else {
 				//deja pas de gomme donc rien a faire
 			}
 		}
+	}
+
+	public boolean getPMSupra() {
+		return this.supra;
+	}
+
+	public void resetSupra() {
+		this.supra = false;
 	}
 
 

@@ -60,6 +60,10 @@ class Gomme extends Figure {
     return this.figures[1];
   }
 
+  public boolean getSupra() {
+    return this.supra;
+  }
+
   /**
    * dessine l'objet case Gomme
    * Square (fond)
