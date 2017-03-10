@@ -42,6 +42,7 @@ public class Score {
   }
 
   protected void invariant() {
+    
   }
 
 }
