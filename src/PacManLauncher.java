@@ -28,15 +28,15 @@ class PacManLauncher {
     Canvas c = Canvas.getCanvas();
     PacManLauncher pml = new PacManLauncher();
     pml.draw();
-    pml.animate();//lvl1
+    pml.animate(); // Le lvl 1
+
     for (int i=1; i<PacManLauncher.NBR_LVL; i++) {
       pml.upLvl(i+1);
       pml.draw();
       pml.animate();
     }
 
-    System.out.println("SCORE="+pml.getPacman().getScore());
-    System.out.println("LIFE="+pml.getPacman().getLife());
+    Score.setScore(pml.getPacman().getScore()+"");
     System.out.println("~~~END~~~");
   }
 
@@ -134,7 +134,7 @@ class PacManLauncher {
         g.move();
       }
       this.collisionGhost();
-      Canvas.getCanvas().redraw(this.pacman.getScore(), this.pacman.getLife());
+      Canvas.getCanvas().redraw(this.pacman.getScore(), this.pacman.getLife(), Score.getScore());
     }
   }
 

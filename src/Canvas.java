@@ -246,14 +246,15 @@ public class Canvas
     /**
      * Redraw all shapes currently on the Canvas.
      */
-    public void redraw(int score, int life)
+    public void redraw(int score, int life, String meilleurScore)
     {
         erase();
         for(Object shape : objects) {
             shapes.get(shape).draw(graphic);
         }
-        printString("SCORE : "+score, 10, 20);
-        printString("LIFE : "+life, 10, 40);
+        printString("Score : "+score, 10, 20);
+        printString("Vie : "+life, 10, 40);
+        printString("Meilleur score : "+meilleurScore, 250, 20);
         canvas.repaint();
         wait(125);
     }
