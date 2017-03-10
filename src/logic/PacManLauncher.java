@@ -3,7 +3,7 @@ import java.util.*;
 import data.*;
 import view.*;
 
-class PacManLauncher {
+public class PacManLauncher {
 
   private data.Map maps;
   private Pacman pacman;
