@@ -36,7 +36,9 @@ class PacManLauncher {
       pml.animate();
     }
 
-    Score.setScore(pml.getPacman().getScore()+"");
+    if (Integer.valueOf(Score.getScore()) < pml.getPacman().getScore()) {
+      Score.setScore(pml.getPacman().getScore()+"");
+    }
     System.out.println("~~~END~~~");
   }
 
