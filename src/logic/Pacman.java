@@ -196,25 +196,25 @@ public class Pacman extends Entite {
 
 			switch (toward) {
 				case PacManLauncher.UP :
-					if (fup.getClass().getName().compareTo("Wall") != 0) {
+					if (fup.getClass().getName().compareTo("view.Wall") != 0) {
 						haveMoved = true;
 					} else {
 					}
 					break;
 				case PacManLauncher.DOWN :
-					if (fdown.getClass().getName().compareTo("Wall") != 0) {
+					if (fdown.getClass().getName().compareTo("view.Wall") != 0) {
 						haveMoved = true;
 					} else {
 					}
 					break;
 				case PacManLauncher.LEFT :
-					if (fleft.getClass().getName().compareTo("Wall") != 0) {
+					if (fleft.getClass().getName().compareTo("view.Wall") != 0) {
 						haveMoved = true;
 					} else {
 					}
 					break;
 				case PacManLauncher.RIGHT :
-					if (fright.getClass().getName().compareTo("Wall") != 0) {
+					if (fright.getClass().getName().compareTo("view.Wall") != 0) {
 						haveMoved = true;
 					} else {
 					}

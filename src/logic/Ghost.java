@@ -211,41 +211,41 @@ public class Ghost extends Entite {
 
 			switch (toward) {
 				case PacManLauncher.UP :
-					if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
+					if (fleft.getClass().getName().compareTo("view.Wall") != 0 || fright.getClass().getName().compareTo("view.Wall") != 0) {
 						caseAround.remove(fdown);
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
-					} else if (fup.getClass().getName().compareTo("Wall") == 0) {
+					} else if (fup.getClass().getName().compareTo("view.Wall") == 0) {
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
 					}
 					break;
 				case PacManLauncher.DOWN :
-					if (fleft.getClass().getName().compareTo("Wall") != 0 || fright.getClass().getName().compareTo("Wall") != 0) {
+					if (fleft.getClass().getName().compareTo("view.Wall") != 0 || fright.getClass().getName().compareTo("view.Wall") != 0) {
 						caseAround.remove(fup);
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
-					} else if (fdown.getClass().getName().compareTo("Wall") == 0) {
+					} else if (fdown.getClass().getName().compareTo("view.Wall") == 0) {
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
 					}
 					break;
 				case PacManLauncher.LEFT :
-					if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
+					if (fup.getClass().getName().compareTo("view.Wall") != 0 || fdown.getClass().getName().compareTo("view.Wall") != 0) {
 						caseAround.remove(fright);
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
-					} else if (fleft.getClass().getName().compareTo("Wall") == 0) {
+					} else if (fleft.getClass().getName().compareTo("view.Wall") == 0) {
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
 					}
 					break;
 				case PacManLauncher.RIGHT :
-					if (fup.getClass().getName().compareTo("Wall") != 0 || fdown.getClass().getName().compareTo("Wall") != 0) {
+					if (fup.getClass().getName().compareTo("view.Wall") != 0 || fdown.getClass().getName().compareTo("view.Wall") != 0) {
 						caseAround.remove(fleft);
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
-					} else if (fright.getClass().getName().compareTo("Wall") == 0) {
+					} else if (fright.getClass().getName().compareTo("view.Wall") == 0) {
 						this.chooseMove(toward, caseAround, fup, fdown, fleft, fright);
 						haveMoved = true;
 					}
@@ -263,7 +263,7 @@ public class Ghost extends Entite {
 		ArrayList<Figure> toGo =  new ArrayList<Figure>();
 
 		for (Figure f : listF) {
-			if (f.getClass().getName().compareTo("Wall") != 0) {
+			if (f.getClass().getName().compareTo("view.Wall") != 0) {
 				toGo.add(f);
 			}
 		}
