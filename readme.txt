@@ -1,5 +1,4 @@
 ROLLAND guillaume
-RISCHEBOURG maxime
 FRERET remi
 
 Etant à la racine du projet,
